@@ -1,0 +1,42 @@
+/* ============================================================
+   Muyu: Crece Conmigo — Estilos Globales
+   ============================================================ */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  /* Paleta cálida — nunca rojo alarmante */
+  --color-bg:        #FFF8F0;
+  --color-primary:   #FF8C42;
+  --color-secondary: #6EC6A0;
+  --color-accent:    #FFD166;
+  --color-text:      #3D2B1F;
+  --color-text-soft: #7A5C4A;
+  --color-surface:   #FFFFFF;
+  --color-border:    #F0D9C8;
+
+  /* Tipografía */
+  --font-title: 'Nunito', 'Rounded Mplus 1c', system-ui, sans-serif;
+  --font-body:  system-ui, -apple-system, sans-serif;
+
+  /* Espaciado */
+  --radius-sm: 8px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+}
+
+html, body, #root {
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  -webkit-font-smoothing: antialiased;
+}

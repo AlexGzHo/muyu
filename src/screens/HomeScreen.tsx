@@ -1,10 +1,5 @@
 import type { CSSProperties } from 'react'
-
-/* ============================================================
-   HomeScreen — Pantalla inicial de Muyu: Crece Conmigo
-   Solo muestra el nombre y confirma que React renderiza.
-   Las mascotas y minijuegos se implementarán en fases posteriores.
-   ============================================================ */
+import { TreeIcon } from '../components/svg/Icons'
 
 const styles: Record<string, CSSProperties> = {
   container: {
@@ -16,10 +11,6 @@ const styles: Record<string, CSSProperties> = {
     gap: '16px',
     backgroundColor: 'var(--color-bg)',
     padding: '24px',
-  },
-  emoji: {
-    fontSize: '72px',
-    lineHeight: 1,
   },
   title: {
     fontSize: 'clamp(2rem, 6vw, 3.5rem)',
@@ -51,10 +42,10 @@ const styles: Record<string, CSSProperties> = {
 export default function HomeScreen() {
   return (
     <main style={styles.container}>
-      <span style={styles.emoji} role="img" aria-label="árbol">🌳</span>
+      <TreeIcon size={72} />
       <h1 style={styles.title}>Muyu: Crece Conmigo</h1>
       <p style={styles.subtitle}>Tu compañero de aprendizaje</p>
-      <span style={styles.badge}>FASE 0 — Base lista ✓</span>
+      <span style={styles.badge}>Muyu 2.0</span>
     </main>
   )
 }

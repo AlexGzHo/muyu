@@ -78,7 +78,7 @@ export default function SelectPetScreen({
 
                 {/* Indicador pictográfico de etapa actual */}
                 {(() => {
-                  const stageText = pet.stage === 'baby' ? 'Bebé' : pet.stage === 'sprout' ? 'Joven' : pet.stage === 'young' ? 'Explorador' : 'Adulto'
+                  const stageText = pet.stage === 'baby' ? 'Bebé' : pet.stage === 'sprout' ? 'Pequeño' : pet.stage === 'young' ? 'Explorador' : 'Adulto'
                   return (
                     <div className="pet-card-stage-indicator" aria-label={`Etapa: ${stageText}`}>
                       <SproutStageIcon size={22} active={true} />

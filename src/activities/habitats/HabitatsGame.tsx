@@ -429,13 +429,13 @@ export default function HabitatsGame({
             <div className="celebration-sparkles">
               <SparkleIcon size={56} />
             </div>
-            <h2 className="celebration-title">¡Misión Cumplida!</h2>
+            <h2 className="celebration-title">¡Amigos en Casa!</h2>
             <p className="celebration-subtitle">
-              ¡Todos los animalitos están felices en su hogar!
+              Guiaste a cada animalito a su hogar natural.
             </p>
             <div className="reward-badge-pill">
               <FoodFruitIcon size={26} />
-              <span>+1 Alimento ganado</span>
+              <span>+1 Fruta para tu amigo</span>
             </div>
 
             <div className="celebration-actions-row">

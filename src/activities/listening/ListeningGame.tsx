@@ -261,11 +261,11 @@ export default function ListeningGame({
             <div className="celebration-sparkles">
               <SparkleIcon size={56} />
             </div>
-            <h2 className="celebration-title">¡Gran oído y atención!</h2>
-            <p className="celebration-subtitle">Encontraste todas las figuras en las 3 rondas.</p>
+            <h2 className="celebration-title">¡Gran Oído!</h2>
+            <p className="celebration-subtitle">Escuchaste con atención y hallaste cada figura.</p>
             <div className="reward-badge-pill">
               <FoodFruitIcon size={24} />
-              <span>+1 Alimento ganado</span>
+              <span>+1 Fruta para tu amigo</span>
             </div>
 
             <div className="celebration-actions-row">

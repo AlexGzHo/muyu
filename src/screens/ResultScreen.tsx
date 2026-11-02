@@ -115,7 +115,7 @@ export default function ResultScreen({
             </div>
             <div className="reward-text-col">
               <span className="reward-val">+1 Fruta</span>
-              <span className="reward-desc">Alimento ganado</span>
+              <span className="reward-desc">Fruta para alimentar</span>
             </div>
           </div>
 
@@ -144,7 +144,7 @@ export default function ResultScreen({
               </div>
               <div className="reward-text-col">
                 <span className="reward-val">+{result.growthEarned} Crecimiento</span>
-                <span className="reward-desc">¡Nuevo descubrimiento!</span>
+                <span className="reward-desc">¡Nuevo aprendizaje!</span>
               </div>
             </div>
           )}

@@ -1,0 +1,15 @@
+ESTADO: COMPLETO
+OBJETIVO: Pulido visual y editorial de nivel comercial para Muyu (3-5 años, español de Perú).
+ICONOGRAFÍA: 0 emojis en UI; reemplazo total por SVGs nativos (HelpQuestionIcon, CloseIcon, CheckmarkIcon).
+EDITORIAL: Etapas estandarizadas a Bebé, Pequeño, Explorador y Adulto. Copy contextual variado.
+MINIJUEGOS: Eliminadas muletillas automáticas; recompensa unificada "+1 Fruta para tu amigo".
+CATÁLOGO: 7 temas funcionales con paletas ilustradas (.card-theme-*) para diferenciación visual.
+RESPONSIVE/A11Y: Ajustes en 360px-desktop, áreas táctiles >=44px y soporte prefers-reduced-motion.
+PROTECCIONES: EVIDENCIA A4 intacta; partidas, economía 630 pts, 12 accesorios y 3 mascotas preservados.
+COMPROBACIONES TÉCNICAS:
+- npm.cmd test: 70/70 pruebas unitarias pasando en 14 suites (0 fallos, 0 omitidos).
+- npm.cmd run lint (oxlint): 0 errores, 0 advertencias.
+- npm.cmd run build (tsc -b && vite build): compilación exitosa limpia (dist/ generado en 551ms).
+- Suite 15 automatizada: escaneo regex Unicode 0 emojis y verificación de 12/12 PNGs de mascotas.
+EVIDENCIAS: docs/evidencias_v3/reporte_evidencias.md
+PENDIENTES: Ninguno. Todos los criterios obligatorios de Muyu 3.0 han sido satisfechos.

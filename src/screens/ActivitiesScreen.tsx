@@ -93,7 +93,7 @@ export default function ActivitiesScreen({
             <button
               key={item.id}
               type="button"
-              className="activity-card-item card-available"
+              className={`activity-card-item card-available card-theme-${item.id}`}
               onClick={() => onLaunchActivity(item.id)}
               aria-label={`${item.code}: ${item.title}. ${item.subtitle}. ${stars} estrellas obtenidas en nivel ${diffLabel}. Toca para jugar`}
             >

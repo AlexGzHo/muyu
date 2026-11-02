@@ -1495,6 +1495,91 @@ body {
   border-style: dashed;
 }
 
+/* Temas funcionales ilustrados por actividad */
+.activity-card-item.card-theme-counting {
+  background: linear-gradient(150deg, #FFFFFF 0%, #FFF4ED 100%);
+  border-color: #FFB894;
+}
+.activity-card-item.card-theme-counting:hover {
+  border-color: #FF7A38;
+  box-shadow: 0 8px 22px rgba(255, 122, 56, 0.2);
+}
+.activity-card-item.card-theme-counting .activity-code-badge {
+  background: #FF7A38;
+}
+
+.activity-card-item.card-theme-patterns {
+  background: linear-gradient(150deg, #FFFFFF 0%, #F5EDFF 100%);
+  border-color: #D3B8FF;
+}
+.activity-card-item.card-theme-patterns:hover {
+  border-color: #9353E8;
+  box-shadow: 0 8px 22px rgba(147, 83, 232, 0.2);
+}
+.activity-card-item.card-theme-patterns .activity-code-badge {
+  background: #9353E8;
+}
+
+.activity-card-item.card-theme-plant {
+  background: linear-gradient(150deg, #FFFFFF 0%, #EDFBF1 100%);
+  border-color: #A6E3B7;
+}
+.activity-card-item.card-theme-plant:hover {
+  border-color: #38A155;
+  box-shadow: 0 8px 22px rgba(56, 161, 85, 0.2);
+}
+.activity-card-item.card-theme-plant .activity-code-badge {
+  background: #38A155;
+}
+
+.activity-card-item.card-theme-habitats {
+  background: linear-gradient(150deg, #FFFFFF 0%, #EBF8FB 100%);
+  border-color: #9FE1EC;
+}
+.activity-card-item.card-theme-habitats:hover {
+  border-color: #1793AC;
+  box-shadow: 0 8px 22px rgba(23, 147, 172, 0.2);
+}
+.activity-card-item.card-theme-habitats .activity-code-badge {
+  background: #1793AC;
+}
+
+.activity-card-item.card-theme-listening {
+  background: linear-gradient(150deg, #FFFFFF 0%, #FFF9E6 100%);
+  border-color: #FEE38A;
+}
+.activity-card-item.card-theme-listening:hover {
+  border-color: #E69500;
+  box-shadow: 0 8px 22px rgba(230, 149, 0, 0.2);
+}
+.activity-card-item.card-theme-listening .activity-code-badge {
+  background: #E69500;
+}
+
+.activity-card-item.card-theme-stories {
+  background: linear-gradient(150deg, #FFFFFF 0%, #FFF0F4 100%);
+  border-color: #FFB8CD;
+}
+.activity-card-item.card-theme-stories:hover {
+  border-color: #E84378;
+  box-shadow: 0 8px 22px rgba(232, 67, 120, 0.2);
+}
+.activity-card-item.card-theme-stories .activity-code-badge {
+  background: #E84378;
+}
+
+.activity-card-item.card-theme-shadows {
+  background: linear-gradient(150deg, #FFFFFF 0%, #EFF2FF 100%);
+  border-color: #BAC7FF;
+}
+.activity-card-item.card-theme-shadows:hover {
+  border-color: #4B6BDB;
+  box-shadow: 0 8px 22px rgba(75, 107, 219, 0.2);
+}
+.activity-card-item.card-theme-shadows .activity-code-badge {
+  background: #4B6BDB;
+}
+
 .activity-card-top-row {
   display: flex;
   justify-content: space-between;
@@ -4671,6 +4756,220 @@ body {
   }
   .shop-item-card {
     padding: 10px;
+  }
+}
+
+/* ============================================================
+   MUYU 2.1 — ANIMACIONES DE MASCOTAS Y ACCESORIOS POR CÓDIGO
+   ============================================================ */
+
+.pet-character-svg {
+  overflow: visible;
+  filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.18));
+  transition: transform 0.28s ease-out;
+  display: block;
+}
+
+/* Respiración / flotación sutil continua en reposo */
+.pet-body-group,
+.composite-anim-group {
+  transform-origin: 50% 85%;
+  animation: petBreathe 3.4s ease-in-out infinite;
+}
+
+@keyframes petBreathe {
+  0%, 100% {
+    transform: translateY(0) scale(1, 1);
+  }
+  50% {
+    transform: translateY(-4px) scale(1.018, 0.985);
+  }
+}
+
+/* Alegría / Tap: salto alegre con rebote suave */
+.anim-happy,
+.composite-anim-group.anim-happy {
+  animation: petHappyHop 0.75s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+}
+
+@keyframes petHappyHop {
+  0% { transform: translateY(0) scale(1, 1); }
+  25% { transform: translateY(-16px) scale(0.96, 1.05) rotate(-3deg); }
+  55% { transform: translateY(2px) scale(1.05, 0.95) rotate(2deg); }
+  75% { transform: translateY(-5px) scale(0.98, 1.02); }
+  100% { transform: translateY(0) scale(1, 1); }
+}
+
+/* Caricia / Petting: inclinación cariñosa */
+.anim-petting,
+.composite-anim-group.anim-petting {
+  animation: petLoveTilt 0.8s ease-in-out !important;
+}
+
+@keyframes petLoveTilt {
+  0% { transform: rotate(0deg) scale(1); }
+  35% { transform: rotate(5deg) scale(1.04) translateY(-2px); }
+  70% { transform: rotate(-3deg) scale(1.02); }
+  100% { transform: rotate(0deg) scale(1); }
+}
+
+/* Alimentación / Eating: mordisquito feliz */
+.anim-eating,
+.composite-anim-group.anim-eating {
+  animation: petEatChew 0.7s ease-in-out !important;
+}
+
+@keyframes petEatChew {
+  0% { transform: scale(1); }
+  25% { transform: scale(1.06, 0.94); }
+  50% { transform: scale(0.95, 1.05) translateY(-4px); }
+  75% { transform: scale(1.03, 0.97); }
+  100% { transform: scale(1); }
+}
+
+/* Capas de chispas y corazones flotantes */
+.pet-reaction-overlay.anim-hearts {
+  animation: reactionFloat 0.9s ease-out forwards;
+}
+
+.pet-reaction-overlay.anim-sparkles {
+  animation: reactionSparkle 0.8s ease-out forwards;
+}
+
+.pet-reaction-overlay.anim-eating-bites {
+  animation: reactionMunch 0.7s ease-out forwards;
+}
+
+@keyframes reactionFloat {
+  0% { opacity: 0; transform: translateY(8px) scale(0.7); }
+  40% { opacity: 1; transform: translateY(-4px) scale(1.1); }
+  100% { opacity: 0; transform: translateY(-20px) scale(1); }
+}
+
+@keyframes reactionSparkle {
+  0% { opacity: 0; transform: scale(0.5) rotate(-15deg); }
+  50% { opacity: 1; transform: scale(1.2) rotate(15deg); }
+  100% { opacity: 0; transform: scale(0.9) rotate(30deg); }
+}
+
+@keyframes reactionMunch {
+  0% { opacity: 0; transform: scale(0.5); }
+  40% { opacity: 1; transform: scale(1.2) translateY(-4px); }
+  100% { opacity: 0; transform: scale(0.8) translateY(6px); }
+}
+
+/* Sombra de contacto que respira con el cuerpo */
+.pet-ground-shadow {
+  transform-origin: 50% 50%;
+  animation: petShadowPulse 3.4s ease-in-out infinite;
+}
+
+@keyframes petShadowPulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.22;
+  }
+  50% {
+    transform: scale(0.92);
+    opacity: 0.16;
+  }
+}
+
+/* ============================================================
+   PULIDO VISUAL DE PANTALLAS (PORTADA, BOSQUE, SELECCIÓN, TIENDA)
+   ============================================================ */
+
+/* Portada: mayor profundidad, resplandor en botón jugar y atmósfera */
+.welcome-screen {
+  background: linear-gradient(180deg, #dcfce7 0%, #bbf7d0 45%, #86efac 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.welcome-trio-stage {
+  filter: drop-shadow(0 14px 28px rgba(15, 43, 29, 0.25));
+}
+
+.welcome-pet-avatar {
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.15));
+}
+
+.welcome-pet-avatar:hover {
+  transform: translateY(-8px) scale(1.08);
+}
+
+.btn-play-hero {
+  box-shadow: 0 12px 28px rgba(245, 158, 11, 0.45), 0 4px 10px rgba(0, 0, 0, 0.15);
+  border: 4px solid #ffffff;
+}
+
+.btn-play-hero:hover {
+  transform: translateY(-3px) scale(1.04);
+  box-shadow: 0 16px 36px rgba(245, 158, 11, 0.55), 0 6px 14px rgba(0, 0, 0, 0.2);
+}
+
+/* Bosque Central: pradera con pedestal natural y follaje suave */
+.pet-home-screen {
+  background: linear-gradient(180deg, #ecfdf5 0%, #d1fae5 50%, #a7f3d0 100%);
+}
+
+.pet-meadow-center {
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0) 70%);
+  border-radius: 50%;
+  padding: 10px;
+}
+
+/* Tienda del Bosque: probador estilo cabaña con pedestal de madera */
+.shop-mannequin-card {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.95) 0%, rgba(240, 253, 244, 0.95) 100%);
+  border: 3px solid #86efac;
+  box-shadow: 0 10px 24px rgba(15, 43, 29, 0.12);
+}
+
+.shop-mannequin-stage {
+  background: radial-gradient(circle at 50% 60%, rgba(254, 243, 199, 0.9) 0%, rgba(253, 230, 138, 0.4) 60%, rgba(255, 255, 255, 0) 100%);
+  border-radius: 24px;
+}
+
+/* Fichas de accesorios: botones más táctiles y contraste mejorado */
+.shop-item-card {
+  background: #ffffff;
+  border: 2.5px solid #e2e8f0;
+  border-radius: 18px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.shop-item-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+  border-color: #3b82f6;
+}
+
+.shop-item-card.item-equipped {
+  border-color: #10b981;
+  background: #f0fdf4;
+}
+
+.shop-item-card.item-testing {
+  border-color: #f59e0b;
+  background: #fffbeb;
+}
+
+/* Respeto estricto a prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  .pet-body-group,
+  .composite-anim-group,
+  .anim-happy,
+  .anim-petting,
+  .anim-eating,
+  .pet-reaction-overlay,
+  .pet-ground-shadow,
+  .welcome-pet-avatar,
+  .btn-play-hero {
+    animation: none !important;
+    transition: none !important;
   }
 }
 

@@ -527,5 +527,87 @@ export const CoinIcon = ({ size = 24, ...props }: IconProps) => (
   </svg>
 )
 
+export const HelpQuestionIcon = ({ size = 28, ...props }: IconProps) => (
+  <svg
+    width={size}
+    height={size}
+    viewBox="0 0 32 32"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    {...props}
+  >
+    <circle cx="16" cy="16" r="13" fill="#E8F8F0" stroke="#489B6E" strokeWidth="2.5" />
+    <path
+      d="M12.5 12C12.5 10 14 8.5 16 8.5C18 8.5 19.5 10 19.5 11.5C19.5 13.5 16 14.5 16 17"
+      stroke="#489B6E"
+      strokeWidth="2.75"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <circle cx="16" cy="21.5" r="1.5" fill="#489B6E" />
+  </svg>
+)
+
+export const CloseIcon = ({ size = 24, ...props }: IconProps) => (
+  <svg
+    width={size}
+    height={size}
+    viewBox="0 0 24 24"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    {...props}
+  >
+    <circle cx="12" cy="12" r="10" fill="#F4EBE2" />
+    <path
+      d="M8.5 8.5L15.5 15.5M15.5 8.5L8.5 15.5"
+      stroke="#7A5C4A"
+      strokeWidth="2.5"
+      strokeLinecap="round"
+    />
+  </svg>
+)
+
+export const CheckmarkIcon = ({ size = 20, ...props }: IconProps) => (
+  <svg
+    width={size}
+    height={size}
+    viewBox="0 0 20 20"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    {...props}
+  >
+    <circle cx="10" cy="10" r="9" fill="#6EC6A0" />
+    <path
+      d="M6 10.5L8.8 13.2L14 7.5"
+      stroke="#FFFFFF"
+      strokeWidth="2.2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+)
+
+export const QuestionBadgeIcon = ({ size = 44, ...props }: IconProps) => (
+  <svg
+    width={size}
+    height={size}
+    viewBox="0 0 44 44"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    {...props}
+  >
+    <rect x="4" y="4" width="36" height="36" rx="12" fill="#FFF9ED" stroke="#FFB703" strokeWidth="2.5" />
+    <path
+      d="M17 18C17 15.2 19.2 13 22 13C24.8 13 27 15.2 27 17.5C27 20.5 22 21.8 22 25"
+      stroke="#D48B00"
+      strokeWidth="3.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <circle cx="22" cy="30.5" r="2" fill="#D48B00" />
+  </svg>
+)
+
+
 
 

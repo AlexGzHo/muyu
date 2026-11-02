@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Prueba de Ajuste de Accesorios en Mascotas 2.1</title>
+  <style>
+    body {
+      background: #1b4332;
+      color: #fff;
+      font-family: system-ui, sans-serif;
+      padding: 20px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+    .card {
+      background: rgba(0,0,0,0.3);
+      border-radius: 12px;
+      padding: 12px;
+      text-align: center;
+    }
+    .preview-box {
+      width: 200px;
+      height: 200px;
+      position: relative;
+      margin: 0 auto;
+    }
+    .preview-box svg {
+      position: absolute;
+      inset: 0;
+    }
+  </style>
+</head>
+<body>
+  <h2>Monito con Accesorios (Gorrita + Gafas + Pañuelo + Mochila)</h2>
+  <div class="grid" id="monkey-grid"></div>
+
+  <h2>Tortuguita con Accesorios (Corona + Lentes + Medalla + Mochila)</h2>
+  <div class="grid" id="turtle-grid"></div>
+
+  <h2>Tucancito con Accesorios (Sombrero + Gafas + Collar + Capa)</h2>
+  <div class="grid" id="toucan-grid"></div>
+
+  <script>
+    const stages = ['baby', 'sprout', 'young', 'adult'];
+    
+    function renderSection(petId, containerId) {
+      const container = document.getElementById(containerId);
+      stages.forEach(st => {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = `
+          <h4>${petId.toUpperCase()} - ${st}</h4>
+          <div class="preview-box">
+            <img src="/pets/${petId}/${st}.png" style="width:180px;height:180px;position:absolute;left:10px;top:10px;object-fit:contain;" />
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    renderSection('monkey', 'monkey-grid');
+    renderSection('turtle', 'turtle-grid');
+    renderSection('toucan', 'toucan-grid');
+  </script>
+</body>
+</html>
+

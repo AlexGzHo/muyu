@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react'
 import type { ActiveMatch, DifficultyLevel } from '../../game/types'
 import { generatePatternsRound, type PatternSymbol } from '../../game/activitiesModel'
-import { BackIcon, SoundOnIcon, SparkleIcon, FoodFruitIcon } from '../../components/svg/Icons'
+import { BackIcon, SoundOnIcon, SparkleIcon, FoodFruitIcon, QuestionBadgeIcon } from '../../components/svg/Icons'
 import { PatternTile } from '../../components/svg/GameIllustrations'
 import { TropicalHills } from '../../components/svg/Scenery'
 import { soundManager } from '../../audio/soundManager'
@@ -318,7 +318,7 @@ export default function PatternsGame({
                   selectedAnswer ? (
                     <PatternTile symbol={selectedAnswer} size={54} />
                   ) : (
-                    <div className="missing-question-mark">?</div>
+                    <QuestionBadgeIcon size={46} />
                   )
                 ) : (
                   item && <PatternTile symbol={item} size={54} />
@@ -388,13 +388,13 @@ export default function PatternsGame({
             <div className="celebration-sparkles">
               <SparkleIcon size={56} />
             </div>
-            <h2 className="celebration-title">¡Excelente Trabajo!</h2>
+            <h2 className="celebration-title">¡Secuencia Lograda!</h2>
             <p className="celebration-subtitle">
-              ¡Completaste el camino de los patrones!
+              ¡Completaste el camino de los patrones paso a paso!
             </p>
             <div className="reward-badge-pill">
               <FoodFruitIcon size={26} />
-              <span>+1 Alimento ganado</span>
+              <span>+1 Fruta para tu amigo</span>
             </div>
 
             <div className="celebration-actions-row">

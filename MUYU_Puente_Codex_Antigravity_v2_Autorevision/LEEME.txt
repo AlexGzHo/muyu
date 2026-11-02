@@ -1,0 +1,45 @@
+MUYU — PUENTE v2 / CODEx AUTOMATICO AL TERMINAR ANTIGRAVITY
+
+QUE CAMBIA
+- Antigravity termina la tarea y genera informe.
+- El puente invoca automaticamente una revision NUEVA de Codex CLI, en modo solo lectura, basada exclusivamente en la orden y el informe.
+- Ante CORREGIR, el puente delega la correccion a Antigravity y vuelve a pedir revision, hasta DOS veces.
+- Ante APROBADO, detiene todo. Ante BLOQUEADO o cuota agotada, detiene todo sin reintentos infinitos.
+- La revision usa tu cuota de Codex; no se puede hacer gratuita. No aparece por si sola en la conversacion abierta de Codex; el resultado se guarda en archivos.
+
+INSTALACION
+1. Haz una copia del script anterior si lo modificaste.
+2. Descomprime este ZIP en C:\Proyectos\Muyu; reemplaza SOLO tools\Delegar-Antigravity.ps1. No se sobrescribe tu orden.txt ni AGENTS.md.
+3. No borres AGENTS.md: incorpora o referencia las reglas de docs\delegacion\MODO_CODEX_V2.txt sin modificar el resto.
+4. En una terminal PowerShell prueba primero:
+   codex --version
+   & "$env:LOCALAPPDATA\agy\bin\agy.exe" --version
+5. Las dos CLI deben estar instaladas y autenticadas previamente; si tu PATH no incluye codex, instala/configura Codex CLI antes de usar el puente.
+
+USO (en PowerShell, desde C:\Proyectos\Muyu)
+- Editar docs\delegacion\orden.txt (una sola tarea a la vez). Si no existe, crea uno tomando orden-ejemplo.txt como base.
+- Iniciar con revision automatica y maximo 2 correcciones:
+  powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\tools\Delegar-Antigravity.ps1 -Action start
+- Iniciar con UNA revision, sin rondas correctivas:
+  powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\tools\Delegar-Antigravity.ps1 -Action start -MaxCorrections 0
+- Ejecutar SOLO Antigravity (sin gastar cuota Codex):
+  powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\tools\Delegar-Antigravity.ps1 -Action start -Review off
+- Consultar sin gasto de cuota:
+  powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\tools\Delegar-Antigravity.ps1 -Action status
+- Ver informe y decisiones:
+  powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\tools\Delegar-Antigravity.ps1 -Action report
+
+SALIDAS
+- docs\agent-reports\bridge\summary-<runid>.txt: ultimo estado.
+- docs\agent-reports\bridge\report-<runid>-N.md: informe de Antigravity por ronda.
+- docs\agent-reports\bridge\codex-review-<runid>-N.json: decision estructurada de Codex.
+- docs\agent-reports\bridge\agy-<runid>-N.json: salida de Antigravity.
+- docs\agent-reports\bridge\*.stderr.txt: diagnosticos de CLI si fallaron.
+- docs\agent-reports\bridge\task-<runid>.txt: orden congelada.
+
+IMPORTANTE
+- No ejecutamos ninguna de las dos CLI en tu PC desde ChatGPT. Este ZIP es para instalar y probar en tu Windows.
+- La verificacion de Codex es un control documental, no una auditoria manual del codigo. La calidad de la entrega depende de las pruebas reales de Antigravity.
+- El puente nunca usa --dangerously-skip-permissions. Las herramientas de Antigravity deben tener permisos granulares configurados; una CLI puede devolver SUCCESS aunque se hayan denegado herramientas: exigir siempre el informe.
+- Mantener Windows encendido y sin suspension mientras se ejecute.
+- Con cuota Codex agotada puedes usar -Review off y revisar mas adelante manualmente desde la app. La revision automatica que falle por cuota no se reintentara sola.

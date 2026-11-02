@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import type { DifficultyLevel, PetProgress } from '../game/types'
 import { getPedagogicalRecommendation } from '../game/rules'
-import { SoundOnIcon, SoundOffIcon, SparkleIcon } from './svg/Icons'
+import { SoundOnIcon, SoundOffIcon, SparkleIcon, CloseIcon } from './svg/Icons'
 
 interface AdultModalProps {
   isOpen: boolean
@@ -63,9 +63,9 @@ export default function AdultModal({
             className="btn-icon"
             onClick={onClose}
             aria-label="Cerrar ajustes"
-            style={{ width: '48px', height: '48px' }}
+            style={{ width: '48px', height: '48px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
           >
-            ✕
+            <CloseIcon size={24} />
           </button>
         </header>
 

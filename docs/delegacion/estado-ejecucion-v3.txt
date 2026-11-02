@@ -1,0 +1,1 @@
+FINALIZADO CLI exit=0; consultar informe-final-v3.txt; status SUCCESS aislado no certifica entrega.

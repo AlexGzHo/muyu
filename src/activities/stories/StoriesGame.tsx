@@ -516,13 +516,13 @@ export default function StoriesGame({
             <div className="celebration-sparkles">
               <SparkleIcon size={56} />
             </div>
-            <h2 className="celebration-title">¡Hermoso Cuento!</h2>
+            <h2 className="celebration-title">¡Historia Lista!</h2>
             <p className="celebration-subtitle">
-              ¡Ordenaste la historia paso a paso a la perfección!
+              Pusiste en orden cada momento del cuento.
             </p>
             <div className="reward-badge-pill">
               <FoodFruitIcon size={24} />
-              <span>+1 Alimento ganado</span>
+              <span>+1 Fruta para tu amigo</span>
             </div>
 
             <div className="celebration-actions-row">

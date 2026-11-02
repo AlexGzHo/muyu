@@ -1949,6 +1949,64 @@ describe('14. Bloque B: Tienda del Bosque, 12 Accesorios y Economía Canjeable',
   })
 })
 
+describe('15. Auditoría de Criterios Obligatorios Muyu 3.0: Ausencia de emojis y calidad editorial', () => {
+  it('garantiza ausencia total de emojis en archivos de interfaz y estilos (src/**/*.{tsx,ts,css})', async () => {
+    const fs = await import('node:fs')
+    const path = await import('node:path')
+
+    const getFiles = (dir: string): string[] => {
+      let results: string[] = []
+      const list = fs.readdirSync(dir)
+      list.forEach((file) => {
+        const full = path.join(dir, file)
+        const stat = fs.statSync(full)
+        if (stat && stat.isDirectory()) {
+          results = results.concat(getFiles(full))
+        } else if (/\.(tsx|ts|css|html)$/.test(file)) {
+          results.push(full)
+        }
+      })
+      return results
+    }
+
+    const files = getFiles(path.resolve('src'))
+    const emojiRegex = /\p{Extended_Pictographic}/u
+
+    const filesWithEmoji: { file: string; match: string }[] = []
+    for (const file of files) {
+      const content = fs.readFileSync(file, 'utf-8')
+      const m = content.match(emojiRegex)
+      if (m) {
+        filesWithEmoji.push({ file: path.relative('.', file), match: m[0] })
+      }
+    }
+
+    assert.deepEqual(filesWithEmoji, [], `Se detectaron emojis en: ${JSON.stringify(filesWithEmoji)}`)
+  })
+
+  it('verifica que existen los 12 assets de mascotas (3 especies x 4 etapas) en public/pets', async () => {
+    const fs = await import('node:fs')
+    const path = await import('node:path')
+
+    const pets = ['monkey', 'turtle', 'toucan']
+    const stages = ['baby', 'sprout', 'young', 'adult']
+
+    const missing: string[] = []
+    for (const pet of pets) {
+      for (const stage of stages) {
+        const p = path.resolve('public', 'pets', pet, `${stage}.png`)
+        if (!fs.existsSync(p)) {
+          missing.push(path.relative('.', p))
+        }
+      }
+    }
+
+    assert.deepEqual(missing, [], `Faltan assets de mascotas: ${JSON.stringify(missing)}`)
+  })
+})
+
+
+
 
 
 

@@ -1,0 +1,18 @@
+MODO CODEX DIRECTOR (MINIMO CONSUMO) — PUENTE V2
+
+Codex es el director; Antigravity ejecuta. No se permite que Codex programe, explore archivos, abra navegador, corra build, tests o lint, ni compruebe capturas en cada paso.
+
+1. Para tareas nuevas, Codex escribe UNA instruccion acotada en docs/delegacion/orden.txt. Indica objetivo, restricciones, criterios de aceptacion, y la evidencia exigida. No copies el PRD entero en cada orden.
+2. Inicia UNA VEZ: powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\tools\Delegar-Antigravity.ps1 -Action start
+3. Cuando aparezca INICIADO, Codex debe finalizar su turno de inmediato. No hacer polling ni esperar herramientas.
+4. El puente ejecuta Antigravity en segundo plano. Al recibir el informe, inicia una REVISION NUEVA, AISLADA, de Codex CLI; esta NO reanuda automaticamente la conversacion abierta en la app de Codex.
+5. Esa revision solo recibe el texto de la tarea y un reporte compacto, con sandbox de solo lectura y razonamiento bajo. Devuelve APROBADO, CORREGIR o BLOQUEADO como JSON.
+6. Si CORREGIR, el puente envia la instruccion puntual a Antigravity y repite la revision. Maximo dos correcciones por tarea, nunca infinito.
+7. Si falla o se agota la cuota de Codex, parar sin relanzarlo. La tarea se conserva en archivos y el estado sera PENDIENTE_CUOTA_CODEX o REVISION_PENDIENTE.
+8. Si quieres evitar completamente consumo de Codex por una tarea: -Action start -Review off. Antigravity trabajara y entregara el informe sin revision de Codex.
+9. El estado puede verse sin consumir cuota con: powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\tools\Delegar-Antigravity.ps1 -Action status
+10. El resultado resumido con: powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\tools\Delegar-Antigravity.ps1 -Action report
+
+NORMA: Nunca afirmar que Codex verifico codigo o interfaz; solo juzga las evidencias que Antigravity reporta. Una revision automatica sigue consumiendo cuota de Codex. Deben mantenerse los permisos granulares de ambas CLI, sin bypass de seguridad.
+
+Este texto V2 debe incorporarse a AGENTS.md del proyecto SIN borrar instrucciones preexistentes, o aportarse como instruccion permanente de Codex.

@@ -13,7 +13,7 @@ interface EvolutionModalProps {
 
 const STAGE_NAMES: Record<GrowthStage, string> = {
   baby: 'Bebé',
-  sprout: 'Joven',
+  sprout: 'Pequeño',
   young: 'Explorador',
   adult: 'Adulto',
 }

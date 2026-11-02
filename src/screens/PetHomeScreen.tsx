@@ -55,7 +55,7 @@ interface FloatingParticle {
 
 const STAGES_META: Array<{ id: GrowthStage; name: string; threshold: number }> = [
   { id: 'baby', name: 'Bebé', threshold: GROWTH_THRESHOLDS.baby },
-  { id: 'sprout', name: 'Brote', threshold: GROWTH_THRESHOLDS.sprout },
+  { id: 'sprout', name: 'Pequeño', threshold: GROWTH_THRESHOLDS.sprout },
   { id: 'young', name: 'Explorador', threshold: GROWTH_THRESHOLDS.young },
   { id: 'adult', name: 'Adulto', threshold: GROWTH_THRESHOLDS.adult },
 ]

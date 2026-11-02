@@ -9,6 +9,8 @@ import {
   SparkleIcon,
   HeartIcon,
   SproutStageIcon,
+  HelpQuestionIcon,
+  CloseIcon,
 } from '../components/svg/Icons'
 import { TropicalSun, JungleCanopy, TropicalHills, DeepForestBackdrop } from '../components/svg/Scenery'
 import AdultModal from '../components/AdultModal'
@@ -74,7 +76,7 @@ export default function WelcomeScreen({
           aria-label="Ver guía del juego"
           title="¿Cómo jugar?"
         >
-          <span style={{ fontSize: '1.4rem', fontWeight: 900, color: '#489B6E' }}>?</span>
+          <HelpQuestionIcon size={32} />
         </button>
 
         <div className="top-right-controls">
@@ -200,7 +202,7 @@ export default function WelcomeScreen({
                 }}
                 aria-label="Cerrar guía"
               >
-                <span aria-hidden="true">✕</span>
+                <CloseIcon size={24} />
               </button>
             </header>
             <div className="guide-steps-grid">

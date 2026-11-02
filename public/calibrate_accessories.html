@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Muyu 2.1 — Calibrador Visual de Wearable System</title>
+  <style>
+    body {
+      background: #12291e;
+      color: #fff;
+      font-family: system-ui, -apple-system, sans-serif;
+      margin: 0;
+      padding: 24px;
+    }
+    h1 { text-align: center; color: #ffb703; }
+    .species-section {
+      background: rgba(255,255,255,0.05);
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 30px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
+    .card {
+      background: rgba(0,0,0,0.3);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 12px;
+      padding: 12px;
+      text-align: center;
+    }
+    .stage-label {
+      font-weight: bold;
+      color: #a7f3d0;
+      margin-bottom: 8px;
+    }
+    .svg-box {
+      width: 200px;
+      height: 200px;
+      margin: 0 auto;
+      background: radial-gradient(circle, rgba(255,255,255,0.12) 0%, rgba(0,0,0,0) 70%);
+      position: relative;
+    }
+  </style>
+</head>
+<body>
+  <h1>Muyu 2.1 — Wearable System: Calibración y Variantes Anatómicas</h1>
+  <p style="text-align:center; color:#94d2bd;">Visualización simultánea de Gorrita con volumen, Lentes adaptados por especie (monóculo tucán, perspectiva tortuga, frontal mono), Pañuelo y Mochila integrada.</p>
+
+  <div id="content"></div>
+
+  <script type="module">
+const WEARABLE_CONFIG = {
+  // ==========================================
+  // CABEZA (head)
+  // ==========================================
+  orange_cap: {
+    monkey: {
+      baby: { x: 99, y: 44, scale: 0.98, rotation: 0 },
+      sprout: { x: 92, y: 46, scale: 0.92, rotation: -4 },
+      young: { x: 109, y: 50, scale: 0.92, rotation: 6 },
+      adult: { x: 87, y: 40, scale: 0.88, rotation: -2 },
+    },
+    turtle: {
+      baby: { x: 111, y: 48, scale: 0.78, rotation: 6 },
+      sprout: { x: 130, y: 42, scale: 0.80, rotation: 8 },
+      young: { x: 129, y: 66, scale: 0.78, rotation: 10 },
+      adult: { x: 147, y: 50, scale: 0.82, rotation: 8 },
+    },
+    toucan: {
+      baby: { x: 92, y: 42, scale: 0.82, rotation: -4 },
+      sprout: { x: 102, y: 40, scale: 0.84, rotation: -2 },
+      young: { x: 112, y: 56, scale: 0.85, rotation: -2 },
+      adult: { x: 108, y: 40, scale: 0.88, rotation: -2 },
+    },
+  },
+
+  explorer_hat: {
+    monkey: {
+      baby: { x: 99, y: 42, scale: 0.92, rotation: 0 },
+      sprout: { x: 92, y: 44, scale: 0.88, rotation: -4 },
+      young: { x: 109, y: 48, scale: 0.88, rotation: 6 },
+      adult: { x: 87, y: 38, scale: 0.84, rotation: -2 },
+    },
+    turtle: {
+      baby: { x: 111, y: 46, scale: 0.74, rotation: 6 },
+      sprout: { x: 130, y: 40, scale: 0.76, rotation: 8 },
+      young: { x: 129, y: 64, scale: 0.74, rotation: 10 },
+      adult: { x: 147, y: 48, scale: 0.78, rotation: 8 },
+    },
+    toucan: {
+      baby: { x: 92, y: 40, scale: 0.76, rotation: -4 },
+      sprout: { x: 102, y: 38, scale: 0.78, rotation: -2 },
+      young: { x: 112, y: 54, scale: 0.80, rotation: -2 },
+      adult: { x: 108, y: 38, scale: 0.82, rotation: -2 },
+    },
+  },
+
+  leaf_crown: {
+    monkey: {
+      baby: { x: 99, y: 44, scale: 0.96, rotation: 0 },
+      sprout: { x: 92, y: 46, scale: 0.90, rotation: -4 },
+      young: { x: 109, y: 50, scale: 0.92, rotation: 6 },
+      adult: { x: 87, y: 42, scale: 0.86, rotation: -2 },
+    },
+    turtle: {
+      baby: { x: 111, y: 50, scale: 0.78, rotation: 6 },
+      sprout: { x: 130, y: 44, scale: 0.80, rotation: 8 },
+      young: { x: 129, y: 68, scale: 0.78, rotation: 10 },
+      adult: { x: 147, y: 52, scale: 0.82, rotation: 8 },
+    },
+    toucan: {
+      baby: { x: 94, y: 44, scale: 0.82, rotation: -4 },
+      sprout: { x: 104, y: 42, scale: 0.84, rotation: -2 },
+      young: { x: 113, y: 58, scale: 0.86, rotation: -2 },
+      adult: { x: 110, y: 42, scale: 0.88, rotation: -2 },
+    },
+  },
+
+  color_bow: {
+    monkey: {
+      // En la oreja/copete del monito
+      baby: { x: 124, y: 46, scale: 0.88, rotation: 15 },
+      sprout: { x: 116, y: 48, scale: 0.84, rotation: 12 },
+      young: { x: 130, y: 54, scale: 0.85, rotation: 18 },
+      adult: { x: 108, y: 44, scale: 0.82, rotation: 14 },
+    },
+    turtle: {
+      baby: { x: 128, y: 48, scale: 0.75, rotation: 20 },
+      sprout: { x: 146, y: 42, scale: 0.76, rotation: 22 },
+      young: { x: 144, y: 64, scale: 0.75, rotation: 25 },
+      adult: { x: 162, y: 48, scale: 0.78, rotation: 22 },
+    },
+    toucan: {
+      baby: { x: 82, y: 44, scale: 0.80, rotation: -12 },
+      sprout: { x: 92, y: 40, scale: 0.82, rotation: -10 },
+      young: { x: 102, y: 54, scale: 0.84, rotation: -8 },
+      adult: { x: 98, y: 40, scale: 0.85, rotation: -10 },
+    },
+  },
+
+  // ==========================================
+  // ROSTRO (face: Lentes adaptados a la especie)
+  // ==========================================
+  round_glasses: {
+    monkey: {
+      baby: { x: 99, y: 73, scale: 0.90, rotation: 0 },
+      sprout: { x: 92, y: 72, scale: 0.85, rotation: -4 },
+      young: { x: 109, y: 75, scale: 0.85, rotation: 6 },
+      adult: { x: 87, y: 64, scale: 0.80, rotation: -2 },
+    },
+    turtle: {
+      baby: { x: 116, y: 72, scale: 0.72, rotation: 8 },
+      sprout: { x: 134, y: 66, scale: 0.74, rotation: 10 },
+      young: { x: 133, y: 88, scale: 0.72, rotation: 12 },
+      adult: { x: 151, y: 72, scale: 0.76, rotation: 10 },
+    },
+    toucan: {
+      // En tucán, el monóculo se asienta sobre el ojo y su borde posterior sin tapar el pico
+      baby: { x: 84, y: 62, scale: 0.74, rotation: -4 },
+      sprout: { x: 94, y: 60, scale: 0.76, rotation: -2 },
+      young: { x: 104, y: 76, scale: 0.78, rotation: -2 },
+      adult: { x: 100, y: 60, scale: 0.80, rotation: -2 },
+    },
+  },
+
+  star_glasses: {
+    monkey: {
+      baby: { x: 99, y: 73, scale: 0.88, rotation: 0 },
+      sprout: { x: 92, y: 72, scale: 0.84, rotation: -4 },
+      young: { x: 109, y: 75, scale: 0.84, rotation: 6 },
+      adult: { x: 87, y: 64, scale: 0.78, rotation: -2 },
+    },
+    turtle: {
+      baby: { x: 116, y: 72, scale: 0.70, rotation: 8 },
+      sprout: { x: 134, y: 66, scale: 0.72, rotation: 10 },
+      young: { x: 133, y: 88, scale: 0.70, rotation: 12 },
+      adult: { x: 151, y: 72, scale: 0.74, rotation: 10 },
+    },
+    toucan: {
+      baby: { x: 84, y: 62, scale: 0.73, rotation: -4 },
+      sprout: { x: 94, y: 60, scale: 0.75, rotation: -2 },
+      young: { x: 104, y: 76, scale: 0.76, rotation: -2 },
+      adult: { x: 100, y: 60, scale: 0.78, rotation: -2 },
+    },
+  },
+
+  // ==========================================
+  // CUELLO / PECHO (neck)
+  // ==========================================
+  explorer_scarf: {
+    monkey: {
+      baby: { x: 99, y: 106, scale: 0.90, rotation: 0 },
+      sprout: { x: 93, y: 104, scale: 0.86, rotation: -2 },
+      young: { x: 106, y: 110, scale: 0.90, rotation: 4 },
+      adult: { x: 88, y: 96, scale: 0.86, rotation: 0 },
+    },
+    turtle: {
+      baby: { x: 104, y: 108, scale: 0.78, rotation: 6 },
+      sprout: { x: 120, y: 102, scale: 0.80, rotation: 8 },
+      young: { x: 118, y: 120, scale: 0.80, rotation: 10 },
+      adult: { x: 136, y: 110, scale: 0.85, rotation: 8 },
+    },
+    toucan: {
+      baby: { x: 96, y: 104, scale: 0.82, rotation: 0 },
+      sprout: { x: 104, y: 102, scale: 0.85, rotation: 0 },
+      young: { x: 112, y: 114, scale: 0.86, rotation: 0 },
+      adult: { x: 108, y: 100, scale: 0.90, rotation: 0 },
+    },
+  },
+
+  gold_medal: {
+    monkey: {
+      baby: { x: 99, y: 102, scale: 0.88, rotation: 0 },
+      sprout: { x: 93, y: 100, scale: 0.84, rotation: -2 },
+      young: { x: 106, y: 106, scale: 0.88, rotation: 4 },
+      adult: { x: 88, y: 92, scale: 0.84, rotation: 0 },
+    },
+    turtle: {
+      baby: { x: 104, y: 104, scale: 0.76, rotation: 4 },
+      sprout: { x: 120, y: 98, scale: 0.78, rotation: 6 },
+      young: { x: 118, y: 116, scale: 0.78, rotation: 8 },
+      adult: { x: 136, y: 106, scale: 0.82, rotation: 6 },
+    },
+    toucan: {
+      baby: { x: 96, y: 102, scale: 0.80, rotation: 0 },
+      sprout: { x: 104, y: 100, scale: 0.82, rotation: 0 },
+      young: { x: 112, y: 112, scale: 0.84, rotation: 0 },
+      adult: { x: 108, y: 98, scale: 0.88, rotation: 0 },
+    },
+  },
+
+  flower_necklace: {
+    monkey: {
+      baby: { x: 99, y: 104, scale: 0.92, rotation: 0 },
+      sprout: { x: 93, y: 102, scale: 0.88, rotation: -2 },
+      young: { x: 106, y: 108, scale: 0.92, rotation: 4 },
+      adult: { x: 88, y: 94, scale: 0.88, rotation: 0 },
+    },
+    turtle: {
+      baby: { x: 104, y: 106, scale: 0.78, rotation: 6 },
+      sprout: { x: 120, y: 100, scale: 0.80, rotation: 8 },
+      young: { x: 118, y: 118, scale: 0.80, rotation: 10 },
+      adult: { x: 136, y: 108, scale: 0.84, rotation: 8 },
+    },
+    toucan: {
+      baby: { x: 96, y: 102, scale: 0.84, rotation: 0 },
+      sprout: { x: 104, y: 100, scale: 0.86, rotation: 0 },
+      young: { x: 112, y: 112, scale: 0.88, rotation: 0 },
+      adult: { x: 108, y: 98, scale: 0.92, rotation: 0 },
+    },
+  },
+
+  // ==========================================
+  // ESPALDA / CUERPO (back: Ubicadas con perspectiva)
+  // ==========================================
+  small_backpack: {
+    monkey: {
+      baby: { x: 74, y: 116, scale: 0.86, rotation: 6 },
+      sprout: { x: 68, y: 114, scale: 0.84, rotation: 8 },
+      young: { x: 72, y: 118, scale: 0.88, rotation: 10 },
+      adult: { x: 64, y: 110, scale: 0.85, rotation: 6 },
+    },
+    turtle: {
+      // En tortuga, la mochila reposa sobre el caparazón posterior
+      baby: { x: 68, y: 112, scale: 0.80, rotation: -12 },
+      sprout: { x: 72, y: 106, scale: 0.84, rotation: -14 },
+      young: { x: 64, y: 118, scale: 0.84, rotation: -16 },
+      adult: { x: 74, y: 114, scale: 0.95, rotation: -14 },
+    },
+    toucan: {
+      // En tucán, la mochila asoma tras el ala/lomo izquierdo
+      baby: { x: 62, y: 116, scale: 0.80, rotation: 8 },
+      sprout: { x: 66, y: 114, scale: 0.84, rotation: 8 },
+      young: { x: 64, y: 120, scale: 0.86, rotation: 10 },
+      adult: { x: 60, y: 114, scale: 0.90, rotation: 8 },
+    },
+  },
+
+  explorer_backpack: {
+    monkey: {
+      baby: { x: 74, y: 114, scale: 0.84, rotation: 6 },
+      sprout: { x: 68, y: 112, scale: 0.82, rotation: 8 },
+      young: { x: 72, y: 116, scale: 0.86, rotation: 10 },
+      adult: { x: 64, y: 108, scale: 0.84, rotation: 6 },
+    },
+    turtle: {
+      baby: { x: 68, y: 110, scale: 0.78, rotation: -12 },
+      sprout: { x: 72, y: 104, scale: 0.82, rotation: -14 },
+      young: { x: 64, y: 116, scale: 0.82, rotation: -16 },
+      adult: { x: 74, y: 112, scale: 0.92, rotation: -14 },
+    },
+    toucan: {
+      baby: { x: 62, y: 114, scale: 0.78, rotation: 8 },
+      sprout: { x: 66, y: 112, scale: 0.82, rotation: 8 },
+      young: { x: 64, y: 118, scale: 0.84, rotation: 10 },
+      adult: { x: 60, y: 112, scale: 0.88, rotation: 8 },
+    },
+  },
+
+  short_cape: {
+    monkey: {
+      baby: { x: 99, y: 116, scale: 0.95, rotation: 0 },
+      sprout: { x: 93, y: 114, scale: 0.92, rotation: -2 },
+      young: { x: 102, y: 120, scale: 0.96, rotation: 4 },
+      adult: { x: 88, y: 110, scale: 0.92, rotation: 0 },
+    },
+    turtle: {
+      baby: { x: 80, y: 114, scale: 0.85, rotation: -8 },
+      sprout: { x: 88, y: 108, scale: 0.88, rotation: -10 },
+      young: { x: 82, y: 120, scale: 0.88, rotation: -12 },
+      adult: { x: 94, y: 116, scale: 0.98, rotation: -10 },
+    },
+    toucan: {
+      baby: { x: 84, y: 118, scale: 0.86, rotation: 4 },
+      sprout: { x: 88, y: 116, scale: 0.90, rotation: 4 },
+      young: { x: 90, y: 122, scale: 0.94, rotation: 6 },
+      adult: { x: 86, y: 116, scale: 0.98, rotation: 4 },
+    },
+  },
+}
+
+    function getGlassesSvg(petId) {
+      if (petId === 'toucan') {
+        return `
+          <g id="acc-round_glasses-toucan">
+            <circle cx="0" cy="0" r="15" fill="#A8DADC" fill-opacity="0.32" stroke="#E09F3E" stroke-width="3.2"/>
+            <path d="M-9 -6C-5 -11 3 -11 7 -7" stroke="#FFFFFF" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+            <circle cx="0" cy="0" r="12" stroke="#FFF" stroke-width="1" stroke-opacity="0.4" fill="none"/>
+            <path d="M-15 0C-24 6 -26 22 -18 28" stroke="#D48B00" stroke-width="2.2" stroke-linecap="round" stroke-dasharray="3 2" fill="none"/>
+          </g>
+        `;
+      }
+      if (petId === 'turtle') {
+        return `
+          <g id="acc-round_glasses-turtle">
+            <ellipse cx="-16" cy="1" rx="9" ry="11" fill="#A8DADC" fill-opacity="0.30" stroke="#E09F3E" stroke-width="3.0"/>
+            <path d="M-20 -3C-18 -7 -14 -7 -12 -5" stroke="#FFF" stroke-width="1.6" stroke-linecap="round" fill="none"/>
+            <circle cx="11" cy="-1" r="14" fill="#A8DADC" fill-opacity="0.32" stroke="#E09F3E" stroke-width="3.2"/>
+            <path d="M5 -5C8 -9 14 -9 17 -6" stroke="#FFFFFF" stroke-width="2.0" stroke-linecap="round" fill="none"/>
+            <path d="M-7 0C-4 -3 0 -3 2 0" stroke="#E09F3E" stroke-width="3" stroke-linecap="round" fill="none"/>
+            <path d="M-25 1H-30" stroke="#E09F3E" stroke-width="2.2" stroke-linecap="round"/>
+          </g>
+        `;
+      }
+      return `
+        <g id="acc-round_glasses-monkey">
+          <circle cx="-15" cy="0" r="13" fill="#A8DADC" fill-opacity="0.30" stroke="#E09F3E" stroke-width="3.2"/>
+          <path d="M-21 -4C-18 -8 -13 -8 -11 -6" stroke="#FFFFFF" stroke-width="2.0" stroke-linecap="round" fill="none"/>
+          <circle cx="15" cy="0" r="13" fill="#A8DADC" fill-opacity="0.30" stroke="#E09F3E" stroke-width="3.2"/>
+          <path d="M9 -4C12 -8 17 -8 19 -6" stroke="#FFFFFF" stroke-width="2.0" stroke-linecap="round" fill="none"/>
+          <path d="M-2 -2C-1 -5 1 -5 2 -2" stroke="#E09F3E" stroke-width="3.2" stroke-linecap="round" fill="none"/>
+          <path d="M-28 0H-33" stroke="#E09F3E" stroke-width="2.5" stroke-linecap="round"/>
+          <path d="M28 0H33" stroke="#E09F3E" stroke-width="2.5" stroke-linecap="round"/>
+        </g>
+      `;
+    }
+
+    const capSvg = `
+      <g id="acc-orange_cap">
+        <path d="M-26 2C-26 -19 26 -19 26 2Z" fill="#FF7A00" stroke="#D95F00" stroke-width="3" stroke-linejoin="round"/>
+        <circle cx="0" cy="-18" r="3.5" fill="#FFE066" stroke="#D95F00" stroke-width="1.5"/>
+        <circle cx="-1" cy="-19" r="1.2" fill="#FFF"/>
+        <path d="M-28 2C-15 8 18 8 32 -1C30 5 15 10 -24 5Z" fill="#E66A00" stroke="#B34B00" stroke-width="2.5" stroke-linejoin="round"/>
+      </g>
+    `;
+
+    const scarfSvg = `
+      <g id="acc-explorer_scarf">
+        <path d="M-22 -6C-8 1 8 1 22 -6C25 0 22 6 16 8C6 11 -6 11 -16 8C-22 6 -25 0 -22 -6Z" fill="#489B6E" stroke="#2A6F48" stroke-width="2.5"/>
+        <polygon points="-8 5 8 5 0 23" fill="#5EBC86" stroke="#2A6F48" stroke-width="2.5" stroke-linejoin="round"/>
+        <circle cx="0" cy="6" r="4.5" fill="#3D8E63" stroke="#2A6F48" stroke-width="2"/>
+      </g>
+    `;
+
+    const backpackSvg = `
+      <g id="acc-small_backpack">
+        <rect x="-20" y="-16" width="40" height="36" rx="8" fill="#D4A373" stroke="#8C5C36" stroke-width="2.8"/>
+        <rect x="-14" y="2" width="28" height="14" rx="4" fill="#E2B78A" stroke="#8C5C36" stroke-width="2"/>
+        <path d="M-18 -11H18" stroke="#8C5C36" stroke-width="2.5" stroke-linecap="round"/>
+        <rect x="-4" y="-1" width="8" height="6" rx="2" fill="#FFE066" stroke="#8C5C36" stroke-width="1.5"/>
+      </g>
+    `;
+
+    const container = document.getElementById('content');
+    container.innerHTML = '';
+
+    ['monkey', 'turtle', 'toucan'].forEach(petId => {
+      const sec = document.createElement('div');
+      sec.className = 'species-section';
+      sec.innerHTML = `<h2>${petId.toUpperCase()}</h2><div class="grid" id="grid-${petId}"></div>`;
+      container.appendChild(sec);
+      const grid = sec.querySelector('#grid-' + petId);
+
+      ['baby', 'sprout', 'young', 'adult'].forEach(stage => {
+        const b = WEARABLE_CONFIG.small_backpack[petId][stage];
+        const n = WEARABLE_CONFIG.explorer_scarf[petId][stage];
+        const f = WEARABLE_CONFIG.round_glasses[petId][stage];
+        const h = WEARABLE_CONFIG.orange_cap[petId][stage];
+
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = `
+          <div class="stage-label">${stage.toUpperCase()}</div>
+          <div class="svg-box">
+            <svg viewBox="0 0 200 200" width="200" height="200">
+              <!-- Mochila detrás -->
+              <g transform="translate(${b.x}, ${b.y}) scale(${b.scale}) rotate(${b.rotation || 0})">
+                ${backpackSvg}
+              </g>
+
+              <!-- Mascota -->
+              <image href="/pets/${petId}/${stage}.png" x="10" y="10" width="180" height="180" preserveAspectRatio="xMidYMid meet"/>
+
+              <!-- Pañuelo -->
+              <g transform="translate(${n.x}, ${n.y}) scale(${n.scale}) rotate(${n.rotation || 0})">
+                ${scarfSvg}
+              </g>
+
+              <!-- Lentes -->
+              <g transform="translate(${f.x}, ${f.y}) scale(${f.scale}) rotate(${f.rotation || 0})">
+                ${getGlassesSvg(petId)}
+              </g>
+
+              <!-- Gorrita -->
+              <g transform="translate(${h.x}, ${h.y}) scale(${h.scale}) rotate(${h.rotation || 0})">
+                ${capSvg}
+              </g>
+            </svg>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Muyu 2.1 — Galería Visual de Mascotas (12 Formas + Accesorios)</title>
+  <style>
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      background: #0f2b1d;
+      color: #fff;
+      margin: 0;
+      padding: 24px;
+    }
+    h1, h2 { text-align: center; color: #ffb703; }
+    .species-row {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 40px;
+      background: rgba(255,255,255,0.06);
+      border-radius: 20px;
+      padding: 20px;
+    }
+    .stages-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+      margin-top: 16px;
+    }
+    .stage-card {
+      background: rgba(0,0,0,0.3);
+      border: 2px solid rgba(255,255,255,0.15);
+      border-radius: 16px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+    .stage-title {
+      font-weight: bold;
+      font-size: 16px;
+      margin-bottom: 8px;
+      color: #90e0ef;
+    }
+    .pet-box {
+      width: 220px;
+      height: 220px;
+      position: relative;
+      background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, rgba(0,0,0,0) 70%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .pet-box img {
+      width: 200px;
+      height: 200px;
+      object-fit: contain;
+      filter: drop-shadow(0 8px 16px rgba(0,0,0,0.4));
+    }
+  </style>
+</head>
+<body>
+  <h1>MUYU: CRECE CONMIGO 2.1 — SISTEMA VISUAL DE MASCOTAS</h1>
+  <p style="text-align: center; color: #caf0f8; max-width: 800px; margin: 0 auto 30px;">
+    12 ilustraciones anatómicas diferenciadas por especie y etapa evolutiva (Bebé, Pequeño, Explorador y Adulto).
+  </p>
+
+  <div class="species-row">
+    <h2>1. Monito (Curioso, acrobático y expresivo)</h2>
+    <div class="stages-grid">
+      <div class="stage-card">
+        <span class="stage-title">Bebé (baby)</span>
+        <div class="pet-box"><img src="/pets/monkey/baby.png" alt="Mono Bebé"></div>
+      </div>
+      <div class="stage-card">
+        <span class="stage-title">Pequeño (sprout)</span>
+        <div class="pet-box"><img src="/pets/monkey/sprout.png" alt="Mono Pequeño"></div>
+      </div>
+      <div class="stage-card">
+        <span class="stage-title">Explorador (young)</span>
+        <div class="pet-box"><img src="/pets/monkey/young.png" alt="Mono Explorador"></div>
+      </div>
+      <div class="stage-card">
+        <span class="stage-title">Adulto (adult)</span>
+        <div class="pet-box"><img src="/pets/monkey/adult.png" alt="Mono Adulto"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="species-row">
+    <h2>2. Tortuguita (Dulce, nadadora y protectora)</h2>
+    <div class="stages-grid">
+      <div class="stage-card">
+        <span class="stage-title">Bebé (baby)</span>
+        <div class="pet-box"><img src="/pets/turtle/baby.png" alt="Tortuga Bebé"></div>
+      </div>
+      <div class="stage-card">
+        <span class="stage-title">Pequeño (sprout)</span>
+        <div class="pet-box"><img src="/pets/turtle/sprout.png" alt="Tortuga Pequeña"></div>
+      </div>
+      <div class="stage-card">
+        <span class="stage-title">Explorador (young)</span>
+        <div class="pet-box"><img src="/pets/turtle/young.png" alt="Tortuga Exploradora"></div>
+      </div>
+      <div class="stage-card">
+        <span class="stage-title">Adulto (adult)</span>
+        <div class="pet-box"><img src="/pets/turtle/adult.png" alt="Tortuga Adulta"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="species-row">
+    <h2>3. Tucancito (Colorido, saltarín y majestuoso)</h2>
+    <div class="stages-grid">
+      <div class="stage-card">
+        <span class="stage-title">Bebé (baby)</span>
+        <div class="pet-box"><img src="/pets/toucan/baby.png" alt="Tucán Bebé"></div>
+      </div>
+      <div class="stage-card">
+        <span class="stage-title">Pequeño (sprout)</span>
+        <div class="pet-box"><img src="/pets/toucan/sprout.png" alt="Tucán Pequeño"></div>
+      </div>
+      <div class="stage-card">
+        <span class="stage-title">Explorador (young)</span>
+        <div class="pet-box"><img src="/pets/toucan/young.png" alt="Tucán Explorador"></div>
+      </div>
+      <div class="stage-card">
+        <span class="stage-title">Adulto (adult)</span>
+        <div class="pet-box"><img src="/pets/toucan/adult.png" alt="Tucán Adulto"></div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
+

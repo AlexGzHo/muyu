@@ -254,8 +254,10 @@ SOFTWARE.
 
 ---
 
-## 4. Recursos Visuales y Sonoros Propios (Originales)
+## 4. Recursos Visuales y Sonoros Propios (Originales de Muyu)
 
-- **Ilustraciones vectoriales (SVG):** Diseños vectoriales creados exclusivamente para Muyu para mono, tortuga y tucán.
-- **Iconografía táctil:** Pictogramas SVG de gran tamaño (≥ 64×64 px) diseñados para una navegación infantil sin requerir alfabetización.
-- **Efectos auditivos:** Tonos armónicos y recompensas sintetizados nativamente mediante `AudioContext` (Web Audio API) y `SpeechSynthesis` para locución en español.
+- **Ilustraciones de Personajes (Mascotas 2.1):** Las 12 ilustraciones anatómicas diferenciadas por especie y etapa evolutiva (Monito, Tortuguita y Tucancito en etapas Bebé, Pequeño, Explorador y Adulto) corresponden a arte conceptual oficial del proyecto Muyu, procesadas y optimizadas en alta fidelidad con transparencia anti-aliasing e integradas en `public/pets/{monkey,turtle,toucan}/{baby,sprout,young,adult}.png`.
+- **Catálogo de Accesorios Vectoriales (12 objetos):** Colección de 12 accesorios en capas SVG originales (`PetAccessories.tsx`) clasificadas en 4 categorías anatómicas (`head`, `face`, `neck`, `back`), ancladas dinámicamente mediante matriz matemática por especie y etapa.
+- **Escenografía Multicapa (SVG):** Ilustraciones escénicas originales de selva tropical (`TropicalHills`, `DeepForestBackdrop`, `TropicalSun`, `JungleCanopy`) con perspectiva atmosférica, haces de luz y mariposas/luciérnagas en movimiento.
+- **Iconografía Táctil:** Pictogramas SVG de gran escala (≥ 64×64 px) diseñados para navegación infantil autónoma sin barreras de lectoescritura.
+- **Efectos Auditivos:** Tonos armónicos y fanfarrias generados por síntesis Web Audio API (`AudioContext`) y locución en español mediante `SpeechSynthesis`.

@@ -450,13 +450,13 @@ export default function ShadowsGame({
             <div className="celebration-sparkles">
               <SparkleIcon size={56} />
             </div>
-            <h2 className="celebration-title">¡Gran Percepción!</h2>
+            <h2 className="celebration-title">¡Siluetas Completas!</h2>
             <p className="celebration-subtitle">
-              ¡Encajaste todas las figuras en sus sombras!
+              Hiciste coincidir cada figura con su silueta.
             </p>
             <div className="reward-badge-pill">
               <FoodFruitIcon size={24} />
-              <span>+1 Alimento ganado</span>
+              <span>+1 Fruta para tu amigo</span>
             </div>
 
             <div className="celebration-actions-row">

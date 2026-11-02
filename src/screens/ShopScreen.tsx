@@ -18,6 +18,7 @@ import {
   CoinIcon,
   ShopIcon,
   SparkleIcon,
+  CheckmarkIcon,
 } from '../components/svg/Icons'
 import { TropicalHills } from '../components/svg/Scenery'
 import { soundManager } from '../audio/soundManager'
@@ -214,7 +215,7 @@ export default function ShopScreen({
           <div className="shop-mannequin-header">
             <span className="shop-mannequin-pet-name">{currentPet?.name}</span>
             <span className="shop-mannequin-stage-tag">
-              Etapa: {currentPet?.stage === 'baby' ? 'Bebé' : currentPet?.stage === 'sprout' ? 'Brote' : currentPet?.stage === 'young' ? 'Explorador' : 'Adulto'}
+              Etapa: {currentPet?.stage === 'baby' ? 'Bebé' : currentPet?.stage === 'sprout' ? 'Pequeño' : currentPet?.stage === 'young' ? 'Explorador' : 'Adulto'}
             </span>
           </div>
 
@@ -240,7 +241,7 @@ export default function ShopScreen({
                 onClick={handleClearPreview}
                 aria-label="Restaurar accesorios equipados reales"
               >
-                Limpiar prueba
+                Restablecer probador
               </button>
             )}
             <div className="shop-category-status-chips">
@@ -256,8 +257,13 @@ export default function ShopScreen({
                     className={`shop-status-chip ${isTesting ? 'chip-testing' : 'chip-equipped'}`}
                     onClick={() => isEquippedReal && !isTesting && handleUnequip(cat.id)}
                     title={isEquippedReal && !isTesting ? 'Toca para quitar' : 'En prueba'}
+                    role="button"
+                    tabIndex={0}
                   >
-                    {cat.name}: {item?.name} {isTesting ? '(prueba)' : '✓ (quitar)'}
+                    {!isTesting && isEquippedReal && (
+                      <CheckmarkIcon size={14} style={{ verticalAlign: 'middle', marginRight: '4px' }} />
+                    )}
+                    {cat.name}: {item?.name} {isTesting ? '(en prueba)' : '(quitar)'}
                   </span>
                 )
               })}
@@ -314,7 +320,7 @@ export default function ShopScreen({
                       xmlns="http://www.w3.org/2000/svg"
                       aria-hidden="true"
                     >
-                      <AccessoryGraphic accessoryId={item.id} />
+                      <AccessoryGraphic accessoryId={item.id} petId={selectedPetId} />
                     </svg>
                   </div>
 

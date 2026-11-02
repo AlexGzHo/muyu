@@ -1,0 +1,5 @@
+OBJETIVO: Corregir el ajuste visual de accesorios en las mascotas de Muyu sin rehacer el sistema.
+CONTEXTO: La gorrita naranja se ve desalineada en la Tortuguita bebé de la Tienda del Bosque. Ya existen accesorios, economía y vistas integradas.
+EJECUTA: Inspecciona el renderizado SVG y los anclajes por especie/etapa. Corrige escala, posición, giro y apilamiento. Comprueba varias combinaciones en tortuga, mono y tucán. Usa capturas reales cuando tengas navegador disponible y pruebas aisladas, conservando partidas.
+VALIDA: comprobación visual en tienda/bosque/álbum, 360 px, build, lint, tests; no cambies puntuaciones ni recompensas, no hagas push, no alteres datos del usuario.
+REPORTE: Resume solo lo verificado y señala cualquier caso aún desalineado.

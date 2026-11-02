@@ -1,0 +1,71 @@
+MUYU 3.0 — PULIDO VISUAL Y EDITORIAL DE NIVEL COMERCIAL
+ORDEN DE EJECUCIÓN PARA ANTIGRAVITY (DELEGADA POR CODEX)
+Proyecto: C:\Proyectos\Muyu
+
+OBJETIVO
+Convertir el Muyu actual, funcional, en un juego infantil web con acabado gráfico y editorial propio de un producto cuidado: identidad visual reconocible, textos naturales en español, iconografía ilustrada coherente, jerarquía visual clara, buenas transiciones y pantallas terminadas. Eliminar el aspecto de interfaz generada automáticamente (emojis como iconos, gradientes genéricos, tarjetas repetitivas, textos artificiales, ornamentación sin propósito), SIN rehacer el juego ni alterar sus mecánicas.
+
+ROLES Y CONSUMO
+Codex es SOLO director: entrega esta orden por el puente existente y finaliza su turno en cuanto aparezca INICIADO. No abre archivos de implementación, no programa, no revisa navegadores ni ejecuta build/tests. El puente realizará una revisión documental final y, como máximo, una corrección si se configura así. Antigravity es responsable de analizar selectivamente el proyecto, ejecutar todos los cambios, coordinar subagentes nativos cuando ahorren tiempo, probar y generar evidencias. No pidas confirmaciones por cada ajuste.
+
+CONTEXTO Y PROTECCIONES
+Muyu ya dispone de 7 minijuegos, mascotas en 4 etapas por especie, sistema de puntos, álbum, Tienda del Bosque, 12 accesorios SVG, progreso local y sonido opcional. No des por sentado que los nuevos assets están bien integrados: verifica lo que haya REALMENTE en el repositorio. Preserva la partida original, la clave localStorage existente, las monedas canjeables, el inventario, compras, accesorios equipados, puntuaciones históricas, medallas, evolución y selección de mascota. No tocar los archivos protegidos EVIDENCIA A4 ni el ZIP de recuperación. No introducir cuentas, servicios externos, despliegues ni cambios de economía. No reemplazar SVG de mascotas por imágenes aplanadas si rompe animación y accesorios.
+
+DIAGNÓSTICO CORTO, ORIENTADO A CAMBIOS
+Inspecciona componentes y estilos del proyecto y utiliza el navegador local, si está disponible, para capturar el estado REAL de las pantallas: portada, selección, bosque, catálogo, cada minijuego, resultados, álbum, tienda, probador, configuraciones y estados vacíos/bloqueados. Detecta fallos que el usuario sí ve (iconos que parecen emojis, mensajes torpes, espaciados arbitrarios, accesorios mal anclados, deformaciones, recortes, fondos planos, exceso de cápsulas/tarjetas, paletas inconsistentes). Haz un inventario breve y priorizado; NO realices investigación general ni auditorías exhaustivas. Usa los componentes, ilustraciones y tokens existentes cuando son adecuados.
+
+DIRECCIÓN DE ARTE APROBADA
+Muyu es un juego infantil ilustrado para 3–5 años, con entorno natural y mascotas expresivas. Queremos estética de videojuego infantil pulido, no dashboard SaaS ni mockup de IA. Mantener ternura ligera kawaii en las etapas bebé; otras etapas deben distinguirse claramente sin perder identidad. Componentes inspirados en juguetes/libros infantiles: contornos consistentes, volumen sutil, materiales y sombras discretas, profundidad por planos, espacios respirables y composición intencional. Unificar paleta, tipografía, superficies, radios, marcos y sombras. Conservar accesibilidad y legibilidad. No copiar personajes ni pantallas protegidos de franquicias o aplicaciones comerciales.
+
+TRABAJO OBLIGATORIO
+
+A) ICONOGRAFÍA E ILUSTRACIÓN
+- Sustituir TODOS los emojis, caracteres pictográficos y pseudoiconos de apariencia emoji que se usan como elementos de interfaz por SVG reales de la misma familia visual. Revisar JSX/TSX, CSS, títulos, botones, catálogo, puntajes, menú, tienda, inventario, estados, juegos y álbum.
+- Usar una iconografía coherente: trazos, rellenos, grosor, proporciones y tamaños consistentes. En la UI de adultos sirven iconos lineales existentes; en acciones infantiles usar pictogramas SVG claros e ilustrados, sin mezclar sin criterio ambas familias en la misma zona. No recurrir a iconos de emoji del sistema operativo ni a imágenes externas que cambien según plataforma.
+- Mantener o mejorar assets de mascotas, accesorios y fondos ya aprobados. Añadir textura/ambientación únicamente donde eleve el diseño, sin llenar de adornos. Reutilizar assets locales legales, con registro de licencias. Si un recurso generado no tiene calidad suficiente, sustituirlo por ilustración adecuada, NO por un recorte borroso.
+- Revisar la composición de accesorios, sobre todo el encaje real en mono/tortuga/tucán y sus etapas; preservar orden de capas y animación.
+
+B) EDITORIAL / UX WRITING
+- Corregir ortografía, tildes, gramática, mayúsculas, puntuación y consistencia de nombres. Español natural para Perú y comprensible para niños de 3–5 años; los menús destinados al adulto pueden usar un registro informativo claro.
+- Revisar todos los mensajes visibles: bienvenida, instrucciones de los 7 minijuegos, pistas, aciertos/errores, resultados, álbum, progresión, recompensas, canje, inventario, tienda, ajustes, botones y textos para estados vacíos.
+- Evitar muletillas típicas de textos automáticos: “¡Increíble!”, “¡Fantástico!”, “¡Asombroso!” repetidos en todas las pantallas; textos grandilocuentes o explicaciones demasiado largas. Variar el feedback de forma breve y contextual. Para niñas y niños que no leen, priorizar audio/pictogramas claros y una única acción principal por pantalla.
+- Usar una terminología estable. Etapas visibles: Bebé, Pequeño, Explorador, Adulto (respetando la nomenclatura interna existente para no romper guardados, por ejemplo `sprout` puede seguir siendo el ID de Pequeño).
+- Garantizar que cualquier texto escrito no se recorta ni colisiona con otros elementos al escalar. No dejar placeholders, nombres de variables, mensajes de depuración ni etiquetas en inglés destinadas al usuario.
+
+C) REDISEÑO REFINADO, NO RECONSTRUCCIÓN
+- Portada: composición ilustrada con identidad MUYU, mascotas protagonistas, profundidad del escenario y CTA “Jugar” visualmente obvio; menos espacios vacíos y estética de plantilla.
+- Bosque: escenario con varios planos decorativos, jerarquía clara entre mascota, puntos, alimentación, crecimiento, juegos y tienda. Evitar confusión entre monedas para canjear y puntos históricos.
+- Catálogo de 7 actividades: tarjetas distinguibles por ilustración y color funcional, nombres legibles, progresión y estados claros. No presentar 7 tarjetas idénticas con distinta palabra o emoji.
+- Minijuegos: instrucciones cortas, zona de juego dominante, objetivos táctiles grandes, pistas y retroalimentación gráfica consistentes; no mover controles a lugares arbitrarios entre juegos.
+- Tienda: convertirla en un espacio de juego, con probador grande y accesorios visualmente coherentes; estado “Disponible / Comprado / Equipado” diferenciable sin exceso de badges. Arreglar alineación de accesorios en las especies y edades que estén mal; confirmar que lo probado coincide con lo equipado.
+- Álbum/Resultados: jerarquía clara para evolución, logros, estrellas y recompensas; evitar paneles repletos de información para adultos.
+- Menús y ajustes: iconos SVG, controles comprensibles, navegación y retorno consistentes. No usar `alert`, `confirm` o `prompt` del navegador; mantener modales propios y toast.
+
+D) MOVIMIENTO / ACABADO
+- Añadir o pulir microanimaciones breves y naturales en botones, transiciones, recompensas y mascotas usando las herramientas ya instaladas (CSS/Motion según corresponda). Animación por código; evitar librerías nuevas si no son imprescindibles.
+- Evitar animaciones continuas distractoras, saltos de layout, parpadeos excesivos y motion que dificulte interactuar. Respetar `prefers-reduced-motion`.
+- Revisar profundidad, contornos, sombras, fondos, interacción hover/focus/touch, feedback al arrastrar y transiciones de estados. Asegurar que se siente un solo producto y no una colección de pantallas diseñadas por modelos diferentes.
+
+E) CALIDAD RESPONSIVE Y ACCESIBILIDAD
+- Probar 360px, 390px, 768px y escritorio. Sin desbordes horizontales, controles tapados, texto cortado ni accesorios flotantes. Verificar dispositivos táctiles: zonas de toque infantiles amplias, y alternativa a drag-and-drop cuando exista.
+- Revisar contraste de texto funcional, estados de foco para controles, sonido apagado, texto alternativo/aria cuando aplique y rendimiento razonable en móviles. No alterar los datos reales para hacer capturas; usar perfil o guardado aislado.
+
+ESTRATEGIA DE EFICIENCIA
+Este es un ÚNICO encargo integral. Agrupa modificaciones por componentes compartidos. Primero corrige los estilos/tokens/iconos y el texto en fuentes centralizables; después atiende anomalías específicas por pantalla. Si hay subagentes útiles, divídelos en (1) inventario editorial/iconos, (2) recursos y arte, (3) QA responsive, evitando escrituras concurrentes sobre el mismo archivo. El agente principal integra todo. NO crear 5–10 tareas que requieran aprobación humana. No enviar informes intermedios a Codex. No reconstruir ni refactorizar partes funcionales por gusto.
+
+EVIDENCIAS Y CRITERIOS DE ACEPTACIÓN
+1. No quedan emojis como iconos ni pictogramas improvisados en la UI. Todos los iconos son SVG coherentes; excepciones no visuales deben justificarse.
+2. Textos de interfaz revisados para todas las pantallas y los 7 minijuegos; instrucciones claras y sin errores.
+3. Portada, bosque, catálogo, tienda, álbum y resultados tienen un acabado consistente y menos genérico; mejoras visibles contra la línea base en capturas comparativas.
+4. Mascotas, sus cuatro etapas y los 12 accesorios permanecen funcionales; equipamiento, animación y guardado intactos. Accesorios sin desplazamientos grotescos.
+5. 7 minijuegos, puntos, monedas, alimentación, recompensas, medallas y navegación siguen funcionando sin regresiones.
+6. Vista móvil de 360 y 390 px sin recortes ni desbordes; revisión de tableta y escritorio.
+7. Ejecutar `npm.cmd test`, `npm.cmd run lint` (o linter existente real) y `npm.cmd run build` y registrar resultados exactos. Si no hay script, indicarlo claramente en lugar de afirmar que pasó.
+8. Capturas de antes/después auténticas de portada, bosque, catálogo, tienda con accesorios y una actividad, en un directorio de evidencias nuevo. No modificar material protegido EVIDENCIA A4.
+9. Confirmar que no se alteró el guardado del usuario, ni se hicieron deploy/push ni cambios de servidor.
+
+REPORTE FINAL PARA EL PUENTE / CODEX
+Guarda un reporte compacto (no más de 20 líneas) con ESTADO: COMPLETO/PARCIAL/BLOQUEADO, cambios realizados, pantallas realmente verificadas, pruebas ejecutadas y resultados, rutas de capturas y pendientes reales. Si el puente asigna una ruta de reporte explícita, usa esa ruta. No declarar COMPLETO ante fallas de criterios obligatorios. Puedes mantener un inventario técnico auxiliar pequeño de cambios si hace falta, pero Codex debe recibir SOLO el resumen.
+
+INICIA AHORA
+Inspecciona el código existente de Muyu de forma selectiva, implementa el pulido en una sola ejecución autónoma, verifica y reporta. No rehagas el MVP ni interrumpas por decisiones cosméticas ordinarias.

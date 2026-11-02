@@ -417,11 +417,11 @@ export default function CountingGame({
             <div className="celebration-sparkles">
               <SparkleIcon size={56} />
             </div>
-            <h2 className="celebration-title">¡Excelente conteo!</h2>
-            <p className="celebration-subtitle">Completaste las 3 rondas con éxito.</p>
+            <h2 className="celebration-title">¡Gran Conteo!</h2>
+            <p className="celebration-subtitle">Llenaste la canasta con la cantidad exacta.</p>
             <div className="reward-badge-pill">
               <FoodFruitIcon size={24} />
-              <span>+1 Alimento ganado</span>
+              <span>+1 Fruta para tu amigo</span>
             </div>
 
             <div className="celebration-actions-row">

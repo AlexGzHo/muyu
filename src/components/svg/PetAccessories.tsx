@@ -11,129 +11,339 @@ export interface AccessoryLayerProps extends SVGProps<SVGSVGElement> {
 
 /* ============================================================
    TRANSFORMACIONES Y ANCLAJES ANATÓMICOS EXACTOS
+   Sistema de composición vestibular por especie y etapa.
    Coordenadas en el sistema viewBox "0 0 200 200"
-   Adaptadas a las 3 especies en sus 4 etapas (12 formas)
    ============================================================ */
 
-interface AnchorTransform {
+export interface WearableTransform {
   x: number
   y: number
   scale: number
   rotation?: number
 }
 
-// 1. ANCLAJES PARA CABEZA (head: gorrita, sombrero, corona, lazo)
-const HEAD_ANCHORS: Record<PetId, Record<GrowthStage, AnchorTransform>> = {
-  monkey: {
-    baby: { x: 100, y: 44, scale: 0.95 },
-    sprout: { x: 100, y: 46, scale: 0.92 },
-    young: { x: 100, y: 46, scale: 0.90 },
-    adult: { x: 100, y: 42, scale: 1.0 },
+/**
+ * Matriz Anatómica Específica por Accesorio, Especie y Etapa Evolutiva.
+ * En lugar de agrupar todos los accesorios de cabeza o rostro con el mismo offset,
+ * cada pieza tiene afinamiento exacto sobre la anatomía de la mascota.
+ */
+const WEARABLE_CONFIG: Record<
+  AccessoryId,
+  Record<PetId, Record<GrowthStage, WearableTransform>>
+> = {
+  // ==========================================
+  // CABEZA (head)
+  // ==========================================
+  orange_cap: {
+    monkey: {
+      baby: { x: 99, y: 44, scale: 0.98, rotation: 0 },
+      sprout: { x: 92, y: 46, scale: 0.92, rotation: -4 },
+      young: { x: 109, y: 50, scale: 0.92, rotation: 6 },
+      adult: { x: 87, y: 40, scale: 0.88, rotation: -2 },
+    },
+    turtle: {
+      baby: { x: 111, y: 48, scale: 0.78, rotation: 6 },
+      sprout: { x: 130, y: 42, scale: 0.80, rotation: 8 },
+      young: { x: 129, y: 66, scale: 0.78, rotation: 10 },
+      adult: { x: 147, y: 50, scale: 0.82, rotation: 8 },
+    },
+    toucan: {
+      baby: { x: 92, y: 42, scale: 0.82, rotation: -4 },
+      sprout: { x: 102, y: 40, scale: 0.84, rotation: -2 },
+      young: { x: 112, y: 56, scale: 0.85, rotation: -2 },
+      adult: { x: 108, y: 40, scale: 0.88, rotation: -2 },
+    },
   },
-  turtle: {
-    baby: { x: 100, y: 46, scale: 0.78 },
-    sprout: { x: 100, y: 44, scale: 0.80 },
-    young: { x: 100, y: 42, scale: 0.82 },
-    adult: { x: 100, y: 38, scale: 0.85 },
-  },
-  toucan: {
-    baby: { x: 100, y: 56, scale: 0.82, rotation: -4 },
-    sprout: { x: 100, y: 52, scale: 0.85, rotation: -3 },
-    young: { x: 100, y: 48, scale: 0.88, rotation: -2 },
-    adult: { x: 100, y: 46, scale: 0.92, rotation: -2 },
-  },
-}
 
-// 2. ANCLAJES PARA ROSTRO / OJOS (face: lentes redondos, gafas de estrella)
-const FACE_ANCHORS: Record<PetId, Record<GrowthStage, AnchorTransform>> = {
-  monkey: {
-    baby: { x: 100, y: 72, scale: 0.95 },
-    sprout: { x: 100, y: 74, scale: 0.92 },
-    young: { x: 100, y: 74, scale: 0.92 },
-    adult: { x: 100, y: 74, scale: 0.98 },
+  explorer_hat: {
+    monkey: {
+      baby: { x: 99, y: 42, scale: 0.92, rotation: 0 },
+      sprout: { x: 92, y: 44, scale: 0.88, rotation: -4 },
+      young: { x: 109, y: 48, scale: 0.88, rotation: 6 },
+      adult: { x: 87, y: 38, scale: 0.84, rotation: -2 },
+    },
+    turtle: {
+      baby: { x: 111, y: 46, scale: 0.74, rotation: 6 },
+      sprout: { x: 130, y: 40, scale: 0.76, rotation: 8 },
+      young: { x: 129, y: 64, scale: 0.74, rotation: 10 },
+      adult: { x: 147, y: 48, scale: 0.78, rotation: 8 },
+    },
+    toucan: {
+      baby: { x: 92, y: 40, scale: 0.76, rotation: -4 },
+      sprout: { x: 102, y: 38, scale: 0.78, rotation: -2 },
+      young: { x: 112, y: 54, scale: 0.80, rotation: -2 },
+      adult: { x: 108, y: 38, scale: 0.82, rotation: -2 },
+    },
   },
-  turtle: {
-    baby: { x: 102, y: 65, scale: 0.78 },
-    sprout: { x: 102, y: 64, scale: 0.80 },
-    young: { x: 102, y: 62, scale: 0.82 },
-    adult: { x: 102, y: 60, scale: 0.85 },
-  },
-  toucan: {
-    baby: { x: 94, y: 72, scale: 0.80, rotation: -3 },
-    sprout: { x: 94, y: 70, scale: 0.82, rotation: -2 },
-    young: { x: 94, y: 68, scale: 0.85, rotation: -2 },
-    adult: { x: 94, y: 68, scale: 0.88, rotation: -2 },
-  },
-}
 
-// 3. ANCLAJES PARA CUELLO / PECHO (neck: pañuelo, medalla, collar de flores)
-const NECK_ANCHORS: Record<PetId, Record<GrowthStage, AnchorTransform>> = {
-  monkey: {
-    baby: { x: 100, y: 114, scale: 0.90 },
-    sprout: { x: 100, y: 116, scale: 0.95 },
-    young: { x: 100, y: 116, scale: 1.0 },
-    adult: { x: 100, y: 118, scale: 1.1 },
+  leaf_crown: {
+    monkey: {
+      baby: { x: 99, y: 44, scale: 0.96, rotation: 0 },
+      sprout: { x: 92, y: 46, scale: 0.90, rotation: -4 },
+      young: { x: 109, y: 50, scale: 0.92, rotation: 6 },
+      adult: { x: 87, y: 42, scale: 0.86, rotation: -2 },
+    },
+    turtle: {
+      baby: { x: 111, y: 50, scale: 0.78, rotation: 6 },
+      sprout: { x: 130, y: 44, scale: 0.80, rotation: 8 },
+      young: { x: 129, y: 68, scale: 0.78, rotation: 10 },
+      adult: { x: 147, y: 52, scale: 0.82, rotation: 8 },
+    },
+    toucan: {
+      baby: { x: 94, y: 44, scale: 0.82, rotation: -4 },
+      sprout: { x: 104, y: 42, scale: 0.84, rotation: -2 },
+      young: { x: 113, y: 58, scale: 0.86, rotation: -2 },
+      adult: { x: 110, y: 42, scale: 0.88, rotation: -2 },
+    },
   },
-  turtle: {
-    baby: { x: 100, y: 96, scale: 0.80 },
-    sprout: { x: 100, y: 94, scale: 0.85 },
-    young: { x: 100, y: 92, scale: 0.90 },
-    adult: { x: 100, y: 90, scale: 0.98 },
-  },
-  toucan: {
-    baby: { x: 100, y: 114, scale: 0.85 },
-    sprout: { x: 100, y: 112, scale: 0.90 },
-    young: { x: 100, y: 110, scale: 0.95 },
-    adult: { x: 100, y: 108, scale: 1.05 },
-  },
-}
 
-// 4. ANCLAJES PARA ESPALDA / CUERPO (back: mochila pequeña, mochila explorador, capa)
-const BACK_ANCHORS: Record<PetId, Record<GrowthStage, AnchorTransform>> = {
-  monkey: {
-    baby: { x: 100, y: 140, scale: 0.90 },
-    sprout: { x: 100, y: 138, scale: 0.98 },
-    young: { x: 100, y: 136, scale: 1.05 },
-    adult: { x: 100, y: 134, scale: 1.15 },
+  color_bow: {
+    monkey: {
+      // En la oreja/copete del monito
+      baby: { x: 124, y: 46, scale: 0.88, rotation: 15 },
+      sprout: { x: 116, y: 48, scale: 0.84, rotation: 12 },
+      young: { x: 130, y: 54, scale: 0.85, rotation: 18 },
+      adult: { x: 108, y: 44, scale: 0.82, rotation: 14 },
+    },
+    turtle: {
+      baby: { x: 128, y: 48, scale: 0.75, rotation: 20 },
+      sprout: { x: 146, y: 42, scale: 0.76, rotation: 22 },
+      young: { x: 144, y: 64, scale: 0.75, rotation: 25 },
+      adult: { x: 162, y: 48, scale: 0.78, rotation: 22 },
+    },
+    toucan: {
+      baby: { x: 82, y: 44, scale: 0.80, rotation: -12 },
+      sprout: { x: 92, y: 40, scale: 0.82, rotation: -10 },
+      young: { x: 102, y: 54, scale: 0.84, rotation: -8 },
+      adult: { x: 98, y: 40, scale: 0.85, rotation: -10 },
+    },
   },
-  turtle: {
-    baby: { x: 100, y: 130, scale: 0.88 },
-    sprout: { x: 100, y: 128, scale: 0.95 },
-    young: { x: 100, y: 124, scale: 1.05 },
-    adult: { x: 100, y: 120, scale: 1.15 },
+
+  // ==========================================
+  // ROSTRO (face: Lentes adaptados a la especie)
+  // ==========================================
+  round_glasses: {
+    monkey: {
+      baby: { x: 99, y: 73, scale: 0.90, rotation: 0 },
+      sprout: { x: 92, y: 72, scale: 0.85, rotation: -4 },
+      young: { x: 109, y: 75, scale: 0.85, rotation: 6 },
+      adult: { x: 87, y: 64, scale: 0.80, rotation: -2 },
+    },
+    turtle: {
+      baby: { x: 116, y: 72, scale: 0.72, rotation: 8 },
+      sprout: { x: 134, y: 66, scale: 0.74, rotation: 10 },
+      young: { x: 133, y: 88, scale: 0.72, rotation: 12 },
+      adult: { x: 151, y: 72, scale: 0.76, rotation: 10 },
+    },
+    toucan: {
+      // En tucán, el monóculo se asienta sobre el ojo y su borde posterior sin tapar el pico
+      baby: { x: 84, y: 62, scale: 0.74, rotation: -4 },
+      sprout: { x: 94, y: 60, scale: 0.76, rotation: -2 },
+      young: { x: 104, y: 76, scale: 0.78, rotation: -2 },
+      adult: { x: 100, y: 60, scale: 0.80, rotation: -2 },
+    },
   },
-  toucan: {
-    baby: { x: 88, y: 134, scale: 0.85, rotation: 5 },
-    sprout: { x: 86, y: 132, scale: 0.90, rotation: 5 },
-    young: { x: 84, y: 130, scale: 0.98, rotation: 5 },
-    adult: { x: 82, y: 128, scale: 1.08, rotation: 5 },
+
+  star_glasses: {
+    monkey: {
+      baby: { x: 99, y: 73, scale: 0.88, rotation: 0 },
+      sprout: { x: 92, y: 72, scale: 0.84, rotation: -4 },
+      young: { x: 109, y: 75, scale: 0.84, rotation: 6 },
+      adult: { x: 87, y: 64, scale: 0.78, rotation: -2 },
+    },
+    turtle: {
+      baby: { x: 116, y: 72, scale: 0.70, rotation: 8 },
+      sprout: { x: 134, y: 66, scale: 0.72, rotation: 10 },
+      young: { x: 133, y: 88, scale: 0.70, rotation: 12 },
+      adult: { x: 151, y: 72, scale: 0.74, rotation: 10 },
+    },
+    toucan: {
+      baby: { x: 84, y: 62, scale: 0.73, rotation: -4 },
+      sprout: { x: 94, y: 60, scale: 0.75, rotation: -2 },
+      young: { x: 104, y: 76, scale: 0.76, rotation: -2 },
+      adult: { x: 100, y: 60, scale: 0.78, rotation: -2 },
+    },
+  },
+
+  // ==========================================
+  // CUELLO / PECHO (neck)
+  // ==========================================
+  explorer_scarf: {
+    monkey: {
+      baby: { x: 99, y: 106, scale: 0.90, rotation: 0 },
+      sprout: { x: 93, y: 104, scale: 0.86, rotation: -2 },
+      young: { x: 106, y: 110, scale: 0.90, rotation: 4 },
+      adult: { x: 88, y: 96, scale: 0.86, rotation: 0 },
+    },
+    turtle: {
+      baby: { x: 104, y: 108, scale: 0.78, rotation: 6 },
+      sprout: { x: 120, y: 102, scale: 0.80, rotation: 8 },
+      young: { x: 118, y: 120, scale: 0.80, rotation: 10 },
+      adult: { x: 136, y: 110, scale: 0.85, rotation: 8 },
+    },
+    toucan: {
+      baby: { x: 96, y: 104, scale: 0.82, rotation: 0 },
+      sprout: { x: 104, y: 102, scale: 0.85, rotation: 0 },
+      young: { x: 112, y: 114, scale: 0.86, rotation: 0 },
+      adult: { x: 108, y: 100, scale: 0.90, rotation: 0 },
+    },
+  },
+
+  gold_medal: {
+    monkey: {
+      baby: { x: 99, y: 102, scale: 0.88, rotation: 0 },
+      sprout: { x: 93, y: 100, scale: 0.84, rotation: -2 },
+      young: { x: 106, y: 106, scale: 0.88, rotation: 4 },
+      adult: { x: 88, y: 92, scale: 0.84, rotation: 0 },
+    },
+    turtle: {
+      baby: { x: 104, y: 104, scale: 0.76, rotation: 4 },
+      sprout: { x: 120, y: 98, scale: 0.78, rotation: 6 },
+      young: { x: 118, y: 116, scale: 0.78, rotation: 8 },
+      adult: { x: 136, y: 106, scale: 0.82, rotation: 6 },
+    },
+    toucan: {
+      baby: { x: 96, y: 102, scale: 0.80, rotation: 0 },
+      sprout: { x: 104, y: 100, scale: 0.82, rotation: 0 },
+      young: { x: 112, y: 112, scale: 0.84, rotation: 0 },
+      adult: { x: 108, y: 98, scale: 0.88, rotation: 0 },
+    },
+  },
+
+  flower_necklace: {
+    monkey: {
+      baby: { x: 99, y: 104, scale: 0.92, rotation: 0 },
+      sprout: { x: 93, y: 102, scale: 0.88, rotation: -2 },
+      young: { x: 106, y: 108, scale: 0.92, rotation: 4 },
+      adult: { x: 88, y: 94, scale: 0.88, rotation: 0 },
+    },
+    turtle: {
+      baby: { x: 104, y: 106, scale: 0.78, rotation: 6 },
+      sprout: { x: 120, y: 100, scale: 0.80, rotation: 8 },
+      young: { x: 118, y: 118, scale: 0.80, rotation: 10 },
+      adult: { x: 136, y: 108, scale: 0.84, rotation: 8 },
+    },
+    toucan: {
+      baby: { x: 96, y: 102, scale: 0.84, rotation: 0 },
+      sprout: { x: 104, y: 100, scale: 0.86, rotation: 0 },
+      young: { x: 112, y: 112, scale: 0.88, rotation: 0 },
+      adult: { x: 108, y: 98, scale: 0.92, rotation: 0 },
+    },
+  },
+
+  // ==========================================
+  // ESPALDA / CUERPO (back: Ubicadas con perspectiva)
+  // ==========================================
+  small_backpack: {
+    monkey: {
+      baby: { x: 74, y: 116, scale: 0.86, rotation: 6 },
+      sprout: { x: 68, y: 114, scale: 0.84, rotation: 8 },
+      young: { x: 72, y: 118, scale: 0.88, rotation: 10 },
+      adult: { x: 64, y: 110, scale: 0.85, rotation: 6 },
+    },
+    turtle: {
+      // En tortuga, la mochila reposa sobre el caparazón posterior
+      baby: { x: 68, y: 112, scale: 0.80, rotation: -12 },
+      sprout: { x: 72, y: 106, scale: 0.84, rotation: -14 },
+      young: { x: 64, y: 118, scale: 0.84, rotation: -16 },
+      adult: { x: 74, y: 114, scale: 0.95, rotation: -14 },
+    },
+    toucan: {
+      // En tucán, la mochila asoma tras el ala/lomo izquierdo
+      baby: { x: 62, y: 116, scale: 0.80, rotation: 8 },
+      sprout: { x: 66, y: 114, scale: 0.84, rotation: 8 },
+      young: { x: 64, y: 120, scale: 0.86, rotation: 10 },
+      adult: { x: 60, y: 114, scale: 0.90, rotation: 8 },
+    },
+  },
+
+  explorer_backpack: {
+    monkey: {
+      baby: { x: 74, y: 114, scale: 0.84, rotation: 6 },
+      sprout: { x: 68, y: 112, scale: 0.82, rotation: 8 },
+      young: { x: 72, y: 116, scale: 0.86, rotation: 10 },
+      adult: { x: 64, y: 108, scale: 0.84, rotation: 6 },
+    },
+    turtle: {
+      baby: { x: 68, y: 110, scale: 0.78, rotation: -12 },
+      sprout: { x: 72, y: 104, scale: 0.82, rotation: -14 },
+      young: { x: 64, y: 116, scale: 0.82, rotation: -16 },
+      adult: { x: 74, y: 112, scale: 0.92, rotation: -14 },
+    },
+    toucan: {
+      baby: { x: 62, y: 114, scale: 0.78, rotation: 8 },
+      sprout: { x: 66, y: 112, scale: 0.82, rotation: 8 },
+      young: { x: 64, y: 118, scale: 0.84, rotation: 10 },
+      adult: { x: 60, y: 112, scale: 0.88, rotation: 8 },
+    },
+  },
+
+  short_cape: {
+    monkey: {
+      baby: { x: 99, y: 116, scale: 0.95, rotation: 0 },
+      sprout: { x: 93, y: 114, scale: 0.92, rotation: -2 },
+      young: { x: 102, y: 120, scale: 0.96, rotation: 4 },
+      adult: { x: 88, y: 110, scale: 0.92, rotation: 0 },
+    },
+    turtle: {
+      baby: { x: 80, y: 114, scale: 0.85, rotation: -8 },
+      sprout: { x: 88, y: 108, scale: 0.88, rotation: -10 },
+      young: { x: 82, y: 120, scale: 0.88, rotation: -12 },
+      adult: { x: 94, y: 116, scale: 0.98, rotation: -10 },
+    },
+    toucan: {
+      baby: { x: 84, y: 118, scale: 0.86, rotation: 4 },
+      sprout: { x: 88, y: 116, scale: 0.90, rotation: 4 },
+      young: { x: 90, y: 122, scale: 0.94, rotation: 6 },
+      adult: { x: 86, y: 116, scale: 0.98, rotation: 4 },
+    },
   },
 }
 
 /* ============================================================
    ILUSTRACIONES VECTORIALES NATIVAS (12 ACCESORIOS CANÓNICOS)
-   Diseño infantil coherente, contornos limpios, estilo Muyu
+   Con soporte para variantes anatómicas por especie:
+   - monkey: Frontal / curvatura facial
+   - turtle: 3/4 redondeado / perspectiva ocular derecha
+   - toucan: Monóculo / perfil con respeto estricto al pico
    ============================================================ */
 
-export const AccessoryGraphic = ({ accessoryId }: { accessoryId: AccessoryId }) => {
+export interface AccessoryGraphicProps {
+  accessoryId: AccessoryId
+  petId?: PetId
+}
+
+export const AccessoryGraphic = ({
+  accessoryId,
+  petId = 'monkey',
+}: AccessoryGraphicProps) => {
   switch (accessoryId) {
     // ----------------------------------------------------
     // CABEZA
     // ----------------------------------------------------
     case 'orange_cap':
       return (
-        <g id="acc-orange_cap">
-          {/* Corona de la gorra */}
+        <g id="acc-orange_cap" className="wearable-part">
+          {/* Corona de la gorra con volumen e iluminación superior */}
           <path
-            d="M-26 2C-26 -18 26 -18 26 2Z"
-            fill="#FF7A00"
+            d="M-26 2C-26 -19 26 -19 26 2Z"
+            fill="url(#cap-orange-grad)"
             stroke="#D95F00"
             strokeWidth="3"
             strokeLinejoin="round"
           />
-          {/* Botón superior */}
+          {/* Brillo superior curvo */}
+          <path
+            d="M-18 -8C-12 -16 12 -16 18 -8"
+            stroke="#FFAE66"
+            strokeWidth="2"
+            strokeLinecap="round"
+            fill="none"
+          />
+          {/* Botón superior esférico con sombra */}
           <circle cx="0" cy="-18" r="3.5" fill="#FFE066" stroke="#D95F00" strokeWidth="1.5" />
-          {/* Visera curva */}
+          <circle cx="-1" cy="-19" r="1.2" fill="#FFF" />
+          {/* Visera curva deportiva con grosor y perspectiva */}
           <path
             d="M-28 2C-15 8 18 8 32 -1C30 5 15 10 -24 5Z"
             fill="#E66A00"
@@ -141,219 +351,386 @@ export const AccessoryGraphic = ({ accessoryId }: { accessoryId: AccessoryId }) 
             strokeWidth="2.5"
             strokeLinejoin="round"
           />
-          {/* Línea decorativa */}
-          <path d="M-12 0C-4 -8 4 -8 12 0" stroke="#FFA34D" strokeWidth="2" strokeLinecap="round" />
+          {/* Borde inferior de la visera (sombra propia) */}
+          <path
+            d="M-25 4C-12 9 16 9 30 1"
+            stroke="#993D00"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            fill="none"
+          />
+          {/* Gradiente interno para volumen */}
+          <defs>
+            <linearGradient id="cap-orange-grad" x1="0" y1="-19" x2="0" y2="2" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stopColor="#FFA14D" />
+              <stop offset="70%" stopColor="#FF7A00" />
+              <stop offset="100%" stopColor="#E65C00" />
+            </linearGradient>
+          </defs>
         </g>
       )
 
     case 'explorer_hat':
       return (
-        <g id="acc-explorer_hat">
-          {/* Ala ancha del sombrero */}
-          <ellipse cx="0" cy="4" rx="38" ry="10" fill="#D4A373" stroke="#8C5C36" strokeWidth="3" />
-          {/* Copa del sombrero */}
+        <g id="acc-explorer_hat" className="wearable-part">
+          {/* Ala ancha inferior sombreada */}
+          <ellipse cx="0" cy="5" rx="39" ry="11" fill="#B38054" />
+          {/* Ala ancha superior del sombrero */}
+          <ellipse cx="0" cy="3" rx="38" ry="10" fill="#D4A373" stroke="#8C5C36" strokeWidth="2.8" />
+          {/* Copa del sombrero con volumen cónico */}
           <path
-            d="M-22 4C-20 -18 20 -18 22 4Z"
+            d="M-22 3C-20 -19 20 -19 22 3Z"
             fill="#E2B78A"
             stroke="#8C5C36"
-            strokeWidth="3"
+            strokeWidth="2.8"
             strokeLinejoin="round"
           />
-          {/* Hendidura superior */}
-          <path d="M-8 -14C-2 -11 2 -11 8 -14" stroke="#8C5C36" strokeWidth="2.5" strokeLinecap="round" />
-          {/* Cinta verde bosque */}
+          {/* Hendidura superior de safari */}
+          <path d="M-8 -15C-2 -12 2 -12 8 -15" stroke="#8C5C36" strokeWidth="2.5" strokeLinecap="round" fill="none" />
+          {/* Cinta verde de expedición */}
           <path
-            d="M-22 1C-10 4 10 4 22 1V4C10 7 -10 7 -22 4Z"
+            d="M-22 0C-10 3 10 3 22 0V3C10 6 -10 6 -22 3Z"
             fill="#489B6E"
             stroke="#2A6F48"
             strokeWidth="1.5"
           />
+          {/* Hebilla dorada miniatura de la cinta */}
+          <rect x="-3" y="0.5" width="6" height="3" rx="1" fill="#FFD166" stroke="#8C5C36" strokeWidth="1" />
         </g>
       )
 
     case 'leaf_crown':
       return (
-        <g id="acc-leaf_crown">
-          {/* Corona de hojas doradas y verdes */}
+        <g id="acc-leaf_crown" className="wearable-part">
+          {/* Tallo arqueado base */}
           <path
             d="M-28 2C-10 6 10 6 28 2"
-            stroke="#5E9A68"
-            strokeWidth="3"
+            stroke="#40804D"
+            strokeWidth="3.2"
             strokeLinecap="round"
             fill="none"
           />
-          {/* Hojas centrales */}
+          {/* Hojas laterales izquierda */}
           <path
-            d="M-20 2C-28 -8 -20 -16 -16 -2C-12 -16 -4 -10 -8 2"
+            d="M-22 2C-30 -8 -22 -16 -17 -2C-13 -16 -5 -10 -9 2"
             fill="#74C69D"
             stroke="#2D6A4F"
             strokeWidth="2"
           />
+          {/* Hoja central dorada y esmeralda */}
           <path
-            d="M0 -2C-6 -18 0 -24 6 -2C12 -24 18 -16 10 2"
+            d="M0 -2C-7 -19 0 -25 7 -2C13 -25 20 -17 11 2"
             fill="#FFD166"
-            stroke="#E09F3E"
+            stroke="#D48B00"
             strokeWidth="2"
           />
+          {/* Hojas laterales derecha */}
           <path
-            d="M16 2C12 -10 20 -16 24 -2C28 -12 34 -6 28 4"
+            d="M17 2C13 -10 21 -16 25 -2C29 -12 35 -6 29 4"
             fill="#95D5B2"
             stroke="#2D6A4F"
             strokeWidth="2"
           />
-          {/* Brote joya central */}
-          <circle cx="0" cy="-4" r="3" fill="#E63946" stroke="#9B2226" strokeWidth="1" />
+          {/* Brote joya de rubí amazónico */}
+          <circle cx="0" cy="-4" r="3.2" fill="#E63946" stroke="#9B2226" strokeWidth="1.2" />
+          <circle cx="-1" cy="-5" r="1" fill="#FFF" />
         </g>
       )
 
     case 'color_bow':
       return (
-        <g id="acc-color_bow">
-          {/* Ala izquierda del lazo */}
+        <g id="acc-color_bow" className="wearable-part">
+          {/* Ala izquierda con pliegue */}
           <polygon
-            points="-2 -2 -22 -14 -20 10"
+            points="-2 -2 -24 -15 -21 11"
             fill="#FF5D8F"
             stroke="#C9184A"
             strokeWidth="2.5"
             strokeLinejoin="round"
           />
-          <polygon points="-2 -2 -16 -8 -15 6" fill="#FF85A1" />
-          {/* Ala derecha del lazo */}
+          <polygon points="-2 -2 -17 -9 -15 7" fill="#FF85A1" />
+          {/* Ala derecha con pliegue */}
           <polygon
-            points="2 -2 22 -14 20 10"
+            points="2 -2 24 -15 21 11"
             fill="#FF5D8F"
             stroke="#C9184A"
             strokeWidth="2.5"
             strokeLinejoin="round"
           />
-          <polygon points="2 -2 16 -8 15 6" fill="#FF85A1" />
-          {/* Cintas colgantes */}
+          <polygon points="2 -2 17 -9 15 7" fill="#FF85A1" />
+          {/* Cintas doradas colgantes festivas */}
           <path
-            d="M-4 4L-12 18L-6 16L-2 6"
+            d="M-5 4L-13 19L-7 17L-2 6"
             fill="#FFD166"
             stroke="#D48B00"
             strokeWidth="1.5"
+            strokeLinejoin="round"
           />
           <path
-            d="M4 4L12 18L6 16L2 6"
+            d="M5 4L13 19L7 17L2 6"
             fill="#FFD166"
             stroke="#D48B00"
             strokeWidth="1.5"
+            strokeLinejoin="round"
           />
-          {/* Nudo central */}
+          {/* Nudo central esférico */}
           <circle cx="0" cy="-1" r="5" fill="#FFE66D" stroke="#D48B00" strokeWidth="2" />
+          <circle cx="-1.5" cy="-2.5" r="1.5" fill="#FFF" />
         </g>
       )
 
     // ----------------------------------------------------
-    // ROSTRO
+    // ROSTRO (Lentes con variantes anatómicas por especie)
     // ----------------------------------------------------
-    case 'round_glasses':
+    case 'round_glasses': {
+      // VARIANTE TUCANCITO: Monóculo académico elegante sobre el ojo visible sin invadir el pico
+      if (petId === 'toucan') {
+        return (
+          <g id="acc-round_glasses-toucan" className="wearable-part glasses-variant-toucan">
+            {/* Lente circular único con cristal translúcido */}
+            <circle
+              cx="0"
+              cy="0"
+              r="15"
+              fill="#A8DADC"
+              fillOpacity="0.32"
+              stroke="#E09F3E"
+              strokeWidth="3.2"
+            />
+            {/* Catchlight curvo de cristal */}
+            <path d="M-9 -6C-5 -11 3 -11 7 -7" stroke="#FFFFFF" strokeWidth="2.2" strokeLinecap="round" fill="none" />
+            {/* Marco interior sutil */}
+            <circle cx="0" cy="0" r="12" stroke="#FFF" strokeWidth="1" strokeOpacity="0.4" fill="none" />
+            {/* Cadena dorada colgante de monóculo hacia atrás de la pluma */}
+            <path
+              d="M-15 0C-24 6 -26 22 -18 28"
+              stroke="#D48B00"
+              strokeWidth="2.2"
+              strokeLinecap="round"
+              strokeDasharray="3 2"
+              fill="none"
+            />
+          </g>
+        )
+      }
+
+      // VARIANTE TORTUGUITA: Gafas adaptadas a perspectiva 3/4 (ojo derecho dominante, izquierdo comprimido)
+      if (petId === 'turtle') {
+        return (
+          <g id="acc-round_glasses-turtle" className="wearable-part glasses-variant-turtle">
+            {/* Ojo izquierdo en perspectiva lejana */}
+            <ellipse
+              cx="-16"
+              cy="1"
+              rx="9"
+              ry="11"
+              fill="#A8DADC"
+              fillOpacity="0.30"
+              stroke="#E09F3E"
+              strokeWidth="3.0"
+            />
+            <path d="M-20 -3C-18 -7 -14 -7 -12 -5" stroke="#FFF" strokeWidth="1.6" strokeLinecap="round" fill="none" />
+
+            {/* Ojo derecho en primer plano */}
+            <circle
+              cx="11"
+              cy="-1"
+              r="14"
+              fill="#A8DADC"
+              fillOpacity="0.32"
+              stroke="#E09F3E"
+              strokeWidth="3.2"
+            />
+            <path d="M5 -5C8 -9 14 -9 17 -6" stroke="#FFFFFF" strokeWidth="2.0" strokeLinecap="round" fill="none" />
+
+            {/* Puente anatómico curvo */}
+            <path d="M-7 0C-4 -3 0 -3 2 0" stroke="#E09F3E" strokeWidth="3" strokeLinecap="round" fill="none" />
+
+            {/* Patilla hacia la cabeza de la tortuga */}
+            <path d="M-25 1H-30" stroke="#E09F3E" strokeWidth="2.2" strokeLinecap="round" />
+          </g>
+        )
+      }
+
+      // VARIANTE MONITO (Default): Frontal curvada simétrica que respeta la línea de ojos y cejas
       return (
-        <g id="acc-round_glasses">
+        <g id="acc-round_glasses-monkey" className="wearable-part glasses-variant-monkey">
           {/* Marco izquierdo */}
           <circle
             cx="-15"
             cy="0"
-            r="12"
-            fill="#80ED99"
-            fillOpacity="0.25"
+            r="13"
+            fill="#A8DADC"
+            fillOpacity="0.30"
             stroke="#E09F3E"
-            strokeWidth="3"
+            strokeWidth="3.2"
           />
-          {/* Catchlight izquierdo */}
-          <path d="M-21 -4C-18 -8 -13 -8 -11 -6" stroke="#FFFFFF" strokeWidth="1.8" strokeLinecap="round" />
+          {/* Reflejo izquierdo */}
+          <path d="M-21 -4C-18 -8 -13 -8 -11 -6" stroke="#FFFFFF" strokeWidth="2.0" strokeLinecap="round" fill="none" />
+
           {/* Marco derecho */}
           <circle
             cx="15"
             cy="0"
-            r="12"
-            fill="#80ED99"
-            fillOpacity="0.25"
+            r="13"
+            fill="#A8DADC"
+            fillOpacity="0.30"
             stroke="#E09F3E"
-            strokeWidth="3"
+            strokeWidth="3.2"
           />
-          {/* Catchlight derecho */}
-          <path d="M9 -4C12 -8 17 -8 19 -6" stroke="#FFFFFF" strokeWidth="1.8" strokeLinecap="round" />
-          {/* Puente */}
-          <path d="M-3 -2C-1 -5 1 -5 3 -2" stroke="#E09F3E" strokeWidth="3" strokeLinecap="round" fill="none" />
-          {/* Patillas */}
-          <path d="M-27 0H-33" stroke="#E09F3E" strokeWidth="2.5" strokeLinecap="round" />
-          <path d="M27 0H33" stroke="#E09F3E" strokeWidth="2.5" strokeLinecap="round" />
+          {/* Reflejo derecho */}
+          <path d="M9 -4C12 -8 17 -8 19 -6" stroke="#FFFFFF" strokeWidth="2.0" strokeLinecap="round" fill="none" />
+
+          {/* Puente nasal anatómico */}
+          <path d="M-2 -2C-1 -5 1 -5 2 -2" stroke="#E09F3E" strokeWidth="3.2" strokeLinecap="round" fill="none" />
+          {/* Patillas laterales que abrazan la cabeza */}
+          <path d="M-28 0H-33" stroke="#E09F3E" strokeWidth="2.5" strokeLinecap="round" />
+          <path d="M28 0H33" stroke="#E09F3E" strokeWidth="2.5" strokeLinecap="round" />
         </g>
       )
+    }
 
-    case 'star_glasses':
+    case 'star_glasses': {
+      // VARIANTE TUCANCITO: Estrella estelar en ojo visible
+      if (petId === 'toucan') {
+        return (
+          <g id="acc-star_glasses-toucan" className="wearable-part star-variant-toucan">
+            <polygon
+              points="0,-16 4.5,-5 16,-5 7,2 10.5,13 0,7 -10.5,13 -7,2 -16,-5 -4.5,-5"
+              fill="#FFD166"
+              fillOpacity="0.45"
+              stroke="#E09F3E"
+              strokeWidth="2.8"
+              strokeLinejoin="round"
+            />
+            <circle cx="-3" cy="-3" r="2" fill="#FFF" opacity="0.9" />
+            <path
+              d="M-15 0C-22 5 -24 18 -18 24"
+              stroke="#D48B00"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeDasharray="2 2"
+              fill="none"
+            />
+          </g>
+        )
+      }
+
+      // VARIANTE TORTUGUITA: Estrellas en perspectiva
+      if (petId === 'turtle') {
+        return (
+          <g id="acc-star_glasses-turtle" className="wearable-part star-variant-turtle">
+            {/* Izquierda pequeña */}
+            <g transform="translate(-16, 2) scale(0.75)">
+              <polygon
+                points="0,-15 4,-5 15,-5 6,2 9,12 0,6 -9,12 -6,2 -15,-5 -4,-5"
+                fill="#FFD166"
+                fillOpacity="0.42"
+                stroke="#E09F3E"
+                strokeWidth="3.0"
+                strokeLinejoin="round"
+              />
+            </g>
+            {/* Derecha frontal */}
+            <g transform="translate(12, -1) scale(1.0)">
+              <polygon
+                points="0,-15 4,-5 15,-5 6,2 9,12 0,6 -9,12 -6,2 -15,-5 -4,-5"
+                fill="#FFD166"
+                fillOpacity="0.45"
+                stroke="#E09F3E"
+                strokeWidth="2.8"
+                strokeLinejoin="round"
+              />
+              <circle cx="-3" cy="-3" r="1.8" fill="#FFF" />
+            </g>
+            <path d="M-6 0H4" stroke="#E09F3E" strokeWidth="2.8" strokeLinecap="round" />
+          </g>
+        )
+      }
+
+      // VARIANTE MONITO (Default)
       return (
-        <g id="acc-star_glasses">
+        <g id="acc-star_glasses-monkey" className="wearable-part star-variant-monkey">
           {/* Estrella izquierda */}
           <polygon
-            points="-16,-12 -12,-4 -4,-4 -10,2 -8,11 -16,6 -24,11 -22,2 -28,-4 -20,-4"
+            points="-15,-13 -11,-4 -3,-4 -9,2 -7,11 -15,6 -23,11 -21,2 -27,-4 -19,-4"
             fill="#FFD166"
-            fillOpacity="0.4"
+            fillOpacity="0.45"
             stroke="#E09F3E"
-            strokeWidth="2.5"
+            strokeWidth="2.8"
             strokeLinejoin="round"
           />
           {/* Estrella derecha */}
           <polygon
-            points="16,-12 20,-4 28,-4 22,2 24,11 16,6 8,11 10,2 4,-4 12,-4"
+            points="15,-13 19,-4 27,-4 21,2 23,11 15,6 7,11 9,2 3,-4 11,-4"
             fill="#FFD166"
-            fillOpacity="0.4"
+            fillOpacity="0.45"
             stroke="#E09F3E"
-            strokeWidth="2.5"
+            strokeWidth="2.8"
             strokeLinejoin="round"
           />
           {/* Puente */}
-          <path d="M-4 -2H4" stroke="#E09F3E" strokeWidth="3" strokeLinecap="round" />
+          <path d="M-3 -1H3" stroke="#E09F3E" strokeWidth="3" strokeLinecap="round" />
+          <circle cx="-17" cy="-5" r="1.5" fill="#FFF" />
+          <circle cx="13" cy="-5" r="1.5" fill="#FFF" />
         </g>
       )
+    }
 
     // ----------------------------------------------------
     // CUELLO / PECHO
     // ----------------------------------------------------
     case 'explorer_scarf':
       return (
-        <g id="acc-explorer_scarf">
-          {/* Banda que rodea el cuello */}
+        <g id="acc-explorer_scarf" className="wearable-part">
+          {/* Banda que rodea el cuello con caída natural */}
           <path
-            d="M-22 -8C-8 -2 8 -2 22 -8C26 0 22 6 16 8C6 10 -6 10 -16 8C-22 6 -26 0 -22 -8Z"
+            d="M-22 -6C-8 1 8 1 22 -6C25 0 22 6 16 8C6 11 -6 11 -16 8C-22 6 -25 0 -22 -6Z"
             fill="#489B6E"
             stroke="#2A6F48"
             strokeWidth="2.5"
           />
           {/* Pañuelo triangular caído */}
-          <polygon points="-8 4 8 4 0 22" fill="#5EBC86" stroke="#2A6F48" strokeWidth="2.5" strokeLinejoin="round" />
-          {/* Nudo */}
-          <circle cx="0" cy="5" r="4.5" fill="#3D8E63" stroke="#2A6F48" strokeWidth="2" />
+          <polygon
+            points="-8 5 8 5 0 23"
+            fill="#5EBC86"
+            stroke="#2A6F48"
+            strokeWidth="2.5"
+            strokeLinejoin="round"
+          />
+          {/* Pliegue de tela */}
+          <line x1="0" y1="5" x2="0" y2="18" stroke="#3D8E63" strokeWidth="1.8" />
+          {/* Nudo central con detalle */}
+          <circle cx="0" cy="6" r="4.5" fill="#3D8E63" stroke="#2A6F48" strokeWidth="2" />
         </g>
       )
 
     case 'gold_medal':
       return (
-        <g id="acc-gold_medal">
-          {/* Cinta en V */}
-          <path d="M-14 -12L-4 4L-10 10" stroke="#3A86FF" strokeWidth="4" strokeLinecap="round" fill="none" />
-          <path d="M14 -12L4 4L10 10" stroke="#3A86FF" strokeWidth="4" strokeLinecap="round" fill="none" />
-          {/* Medalla redonda dorada */}
-          <circle cx="0" cy="14" r="11" fill="#FFB703" stroke="#D48B00" strokeWidth="2.5" />
-          <circle cx="0" cy="14" r="8" fill="#FFD166" />
+        <g id="acc-gold_medal" className="wearable-part">
+          {/* Cinta en V texturizada */}
+          <path d="M-14 -10L-4 6L-10 12" stroke="#3A86FF" strokeWidth="4.5" strokeLinecap="round" fill="none" />
+          <path d="M14 -10L4 6L10 12" stroke="#3A86FF" strokeWidth="4.5" strokeLinecap="round" fill="none" />
+          {/* Medalla dorada */}
+          <circle cx="0" cy="15" r="11" fill="#FFB703" stroke="#D48B00" strokeWidth="2.5" />
+          <circle cx="0" cy="15" r="8.5" fill="#FFD166" />
           {/* Estrella en relieve */}
           <polygon
-            points="0,8 2.5,12.5 7,13 3.5,16 4.5,20.5 0,18.5 -4.5,20.5 -3.5,16 -7,13 -2.5,12.5"
+            points="0,9 2.5,13.5 7,14 3.5,17 4.5,21.5 0,19.5 -4.5,21.5 -3.5,17 -7,14 -2.5,13.5"
             fill="#FB8500"
           />
+          <circle cx="-3" cy="12" r="1.5" fill="#FFF" />
         </g>
       )
 
     case 'flower_necklace':
       return (
-        <g id="acc-flower_necklace">
+        <g id="acc-flower_necklace" className="wearable-part">
           {/* Guirnalda curvada */}
           <path
             d="M-22 -4C-12 12 12 12 22 -4"
             stroke="#52B788"
-            strokeWidth="2.5"
+            strokeWidth="2.8"
             strokeLinecap="round"
             fill="none"
           />
@@ -377,8 +754,10 @@ export const AccessoryGraphic = ({ accessoryId }: { accessoryId: AccessoryId }) 
     // ----------------------------------------------------
     case 'small_backpack':
       return (
-        <g id="acc-small_backpack">
-          {/* Cuerpo de la mochila */}
+        <g id="acc-small_backpack" className="wearable-part">
+          {/* Sombra de la mochila */}
+          <rect x="-18" y="-13" width="38" height="36" rx="8" fill="#B38054" />
+          {/* Cuerpo de cuero aventurero */}
           <rect
             x="-20"
             y="-16"
@@ -387,7 +766,7 @@ export const AccessoryGraphic = ({ accessoryId }: { accessoryId: AccessoryId }) 
             rx="8"
             fill="#D4A373"
             stroke="#8C5C36"
-            strokeWidth="3"
+            strokeWidth="2.8"
           />
           {/* Bolsillo exterior */}
           <rect
@@ -400,18 +779,19 @@ export const AccessoryGraphic = ({ accessoryId }: { accessoryId: AccessoryId }) 
             stroke="#8C5C36"
             strokeWidth="2"
           />
-          {/* Tapa y hebilla */}
-          <path d="M-18 -12H18" stroke="#8C5C36" strokeWidth="2.5" strokeLinecap="round" />
-          <rect x="-4" y="-2" width="8" height="6" rx="2" fill="#FFE066" stroke="#8C5C36" strokeWidth="1.5" />
-          {/* Correas laterales */}
-          <path d="M-20 -8C-28 -2 -28 12 -20 16" stroke="#6F4522" strokeWidth="3" strokeLinecap="round" fill="none" />
-          <path d="M20 -8C28 -2 28 12 20 16" stroke="#6F4522" strokeWidth="3" strokeLinecap="round" fill="none" />
+          {/* Tapa con costura */}
+          <path d="M-18 -11H18" stroke="#8C5C36" strokeWidth="2.5" strokeLinecap="round" />
+          {/* Hebilla dorada */}
+          <rect x="-4" y="-1" width="8" height="6" rx="2" fill="#FFE066" stroke="#8C5C36" strokeWidth="1.5" />
+          {/* Asas laterales */}
+          <path d="M-20 -7C-26 -1 -26 11 -20 15" stroke="#6F4522" strokeWidth="3" strokeLinecap="round" fill="none" />
+          <path d="M20 -7C26 -1 26 11 20 15" stroke="#6F4522" strokeWidth="3" strokeLinecap="round" fill="none" />
         </g>
       )
 
     case 'explorer_backpack':
       return (
-        <g id="acc-explorer_backpack">
+        <g id="acc-explorer_backpack" className="wearable-part">
           {/* Mochila grande con esterilla superior */}
           <rect
             x="-22"
@@ -446,8 +826,8 @@ export const AccessoryGraphic = ({ accessoryId }: { accessoryId: AccessoryId }) 
 
     case 'short_cape':
       return (
-        <g id="acc-short_cape">
-          {/* Capa ondeante */}
+        <g id="acc-short_cape" className="wearable-part">
+          {/* Capa ondeante de héroe */}
           <path
             d="M-18 -12C-30 8 -24 32 -32 44C-18 40 -8 44 0 40C8 44 18 40 32 44C24 32 30 8 18 -12Z"
             fill="#E63946"
@@ -467,8 +847,8 @@ export const AccessoryGraphic = ({ accessoryId }: { accessoryId: AccessoryId }) 
 
 /* ============================================================
    COMPONENTE DE CAPA DE ACCESORIO INDIVIDUAL
-   Calcula automáticamente la transformación de anclaje según
-   especie (petId), etapa (stage) y categoría anatómica.
+   Calcula la transformación exacta para la combinación:
+   (accessoryId, petId, stage)
    ============================================================ */
 
 export const AccessoryLayer = ({
@@ -480,39 +860,18 @@ export const AccessoryLayer = ({
   petId: PetId
   stage: GrowthStage
 }) => {
-  // Determinar la categoría anatómica del accesorio
-  let anchor: AnchorTransform = { x: 100, y: 100, scale: 1 }
-
-  if (
-    accessoryId === 'orange_cap' ||
-    accessoryId === 'explorer_hat' ||
-    accessoryId === 'leaf_crown' ||
-    accessoryId === 'color_bow'
-  ) {
-    anchor = HEAD_ANCHORS[petId][stage]
-  } else if (accessoryId === 'round_glasses' || accessoryId === 'star_glasses') {
-    anchor = FACE_ANCHORS[petId][stage]
-  } else if (
-    accessoryId === 'explorer_scarf' ||
-    accessoryId === 'gold_medal' ||
-    accessoryId === 'flower_necklace'
-  ) {
-    anchor = NECK_ANCHORS[petId][stage]
-  } else if (
-    accessoryId === 'small_backpack' ||
-    accessoryId === 'explorer_backpack' ||
-    accessoryId === 'short_cape'
-  ) {
-    anchor = BACK_ANCHORS[petId][stage]
+  const transformConfig = WEARABLE_CONFIG[accessoryId]?.[petId]?.[stage] ?? {
+    x: 100,
+    y: 100,
+    scale: 1,
   }
 
-  const rot = anchor.rotation ? ` rotate(${anchor.rotation})` : ''
-  const transform = `translate(${anchor.x}, ${anchor.y}) scale(${anchor.scale})${rot}`
+  const rot = transformConfig.rotation ? ` rotate(${transformConfig.rotation})` : ''
+  const transform = `translate(${transformConfig.x}, ${transformConfig.y}) scale(${transformConfig.scale})${rot}`
 
   return (
-    <g transform={transform} className={`accessory-layer accessory-${accessoryId}`}>
-      <AccessoryGraphic accessoryId={accessoryId} />
+    <g transform={transform} className={`accessory-layer accessory-${accessoryId} for-${petId}-${stage}`}>
+      <AccessoryGraphic accessoryId={accessoryId} petId={petId} />
     </g>
   )
 }
-

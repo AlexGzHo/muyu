@@ -30,7 +30,7 @@ interface AlbumScreenProps {
 
 const STAGE_LIST: readonly { id: GrowthStage; name: string }[] = [
   { id: 'baby', name: 'Bebé' },
-  { id: 'sprout', name: 'Brote' },
+  { id: 'sprout', name: 'Pequeño' },
   { id: 'young', name: 'Explorador' },
   { id: 'adult', name: 'Adulto' },
 ]

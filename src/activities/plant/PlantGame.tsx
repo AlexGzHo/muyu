@@ -457,11 +457,11 @@ export default function PlantGame({
             <div className="celebration-sparkles">
               <SparkleIcon size={56} />
             </div>
-            <h2 className="celebration-title">¡Qué hermosa flor!</h2>
-            <p className="celebration-subtitle">Cuidaste la planta con éxito en las 3 etapas.</p>
+            <h2 className="celebration-title">¡Flor Radiante!</h2>
+            <p className="celebration-subtitle">Cuidaste la plantita con tierra, agua y sol.</p>
             <div className="reward-badge-pill">
               <FoodFruitIcon size={26} />
-              <span>+1 Alimento ganado</span>
+              <span>+1 Fruta para tu amigo</span>
             </div>
 
             <div className="celebration-actions-row">

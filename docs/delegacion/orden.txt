@@ -1,44 +1,33 @@
-MUYU 4.0 — FASE 1: LÍNEA BASE VISUAL Y SISTEMA DE ANCLAJES PARA MASCOTAS Y ACCESORIOS
-ORDEN DE EJECUCIÓN PARA ANTIGRAVITY (DELEGADA POR EL ORQUESTADOR)
-Proyecto: C:\Proyectos\Muyu — Plan completo: docs/delegacion/plan-mascotas-v4.md
+MUYU 4.0 — FASE 1b: CIERRE VERIFICABLE DE LA FASE 1 (CORRECCIÓN ENFOCADA)
+ORDEN PARA ANTIGRAVITY (DELEGADA POR EL ORQUESTADOR)
+Proyecto: C:\Proyectos\Muyu — Rama: claude/keen-pasteur-ctllxp
 
-OBJETIVO
-Dejar el sistema mascota+accesorios medible y con una base técnica correcta ANTES de rehacer arte. Esta fase NO regenera las imágenes de las mascotas.
+CONTEXTO
+Tu informe docs/delegacion/informe-final-v4-f1.txt declara COMPLETO. El orquestador lo acepta de forma provisional, pero encuentra cuatro huecos que impiden validarlo. NO rehagas la Fase 1. Corrige solo lo indicado.
 
-DIAGNÓSTICO DEL ORQUESTADOR (verificar, no asumir)
-1. Las 12 imágenes public/pets/{monkey,turtle,toucan}/{baby,sprout,young,adult}.png son ilustraciones independientes, con pose y encuadre distintos y escaladas para llenar el mismo lienzo 512x512. Por eso la mascota no "crece": el bebé ocupa igual o más que el adulto (la tortuga "young" se ve más pequeña que "sprout") y la cabeza cambia de lugar en cada etapa.
-2. PetAccessories.tsx usa WEARABLE_CONFIG con 144 transformaciones x/y/scale/rotation fijadas a mano (12 accesorios x 3 especies x 4 etapas), heredadas de cuando las mascotas eran SVG. No hay puntos de anclaje por imagen; cualquier cambio de arte rompe todo.
-3. Los accesorios son vectoriales planos sobre arte rasterizado con volumen: choque de estilo.
-4. Inconsistencias: ActivityResultModal.tsx fija stage="adult"; EvolutionModal, Welcome, Álbum y Resultados usan PetRenderer sin accesorios; los gradientes de accesorios definen ids fijos dentro de cada <svg> (ids duplicados en la Tienda); en CompositePetRenderer, si size es string, la capa de accesorios usa 200 px y se desalinea.
+1) EVIDENCIA "ANTES" (falta)
+Las capturas en docs/evidencias_v4/baseline/ se tomaron DESPUÉS de los cambios, así que no son una línea base. Crea un worktree temporal del commit c63023b (estado previo) con git worktree, fuera de src/ y sin tocar la carpeta de trabajo. Captura allí la misma matriz y guárdala en docs/evidencias_v4/antes/. Renombra las capturas actuales a docs/evidencias_v4/despues/. Al final, elimina el worktree.
 
-ALCANCE
-A) LÍNEA BASE
-- Crear una página de QA de solo desarrollo (reutilizar o reemplazar public/calibrate_accessories.html y public/test_pet_composite.html; no exponerla en la navegación infantil) que muestre la matriz 3 especies x 4 etapas, sin accesorios y con cada uno de los 12 accesorios.
-- Capturar esa matriz a 390 px y escritorio en docs/evidencias_v4/baseline/. Clasificar cada combinación como OK / AJUSTABLE / NO ENCAJA, en una tabla en docs/evidencias_v4/matriz-accesorios.md.
+2) CAPTURAS LEGIBLES
+Dos capturas de 144 combinaciones no permiten juzgar el encaje. Genera una captura por especie y accesorio (3 x 12 = 36), cada una con las 4 etapas en fila, a un tamaño mínimo de 160 px por mascota, más 3 capturas sin accesorios (crecimiento por etapa). Mismo formato en "antes" y "después". Añade en docs/evidencias_v4/comparativa.md una tabla con enlaces antes/después.
 
-B) SISTEMA DE ANCLAJES (sustituye los números mágicos)
-- Crear src/game/petAnchors.ts (o JSON tipado) con, por especie y etapa: caja visible del cuerpo, centro y ancho de la cabeza, línea de ojos (centro, separación, ángulo), cuello/pecho, espalda y ángulo de inclinación de la cabeza, en coordenadas del viewBox 0..200.
-- Medir los anclajes a partir de los PNG actuales (puedes ayudarte con la caja alfa y marcado manual en la página de QA). Documentar el método para repetirlo cuando cambie el arte.
-- AccessoryLayer calcula la transformación con anclaje + regla del accesorio por categoría (por ejemplo, sombrero: ancho = k x ancho de cabeza, base sobre la parte superior de la cabeza, rotación = inclinación de la cabeza). Mantener una tabla pequeña de correcciones opcionales por combinación, solo cuando sea imprescindible.
-- Añadir compatibilidad: cada accesorio declara en qué especies/etapas encaja. Si NO ENCAJA, la Tienda lo muestra como "No disponible para <mascota>" y no permite comprarlo ni equiparlo; si ya estaba equipado, se conserva en el guardado pero no se dibuja.
+3) CRITERIO DE CLASIFICACIÓN EXPLÍCITO
+En matriz-accesorios.md, documenta el criterio visual usado para OK / AJUSTABLE / NO ENCAJA. Por ejemplo: sombrero apoyado sobre la cabeza sin hueco visible; lentes centrados en los ojos sin tapar el pico ni la boca; mochila detrás del torso sin flotar. Revisa cada combinación con las capturas nuevas y corrige la tabla si alguna marcada OK no cumple.
+Para las 20 bloqueadas, intenta primero un ajuste por anclaje o una variante de perfil del accesorio (lentes de perfil o monóculo en tucán, mochila adaptada al caparazón o al ala). Bloquea solo lo que siga sin encajar después de intentarlo, y reporta cuántas se recuperaron.
 
-C) CORRECCIONES DIRECTAS
-- ActivityResultModal: usar la etapa real.
-- Un único renderizador (CompositePetRenderer) en todas las pantallas que muestran a la mascota del niño, con sus accesorios equipados.
-- Ids de gradientes únicos por instancia (useId) o definidos una vez.
-- Capa de accesorios del mismo tamaño que la mascota para cualquier valor de size.
-- Escala de etapa: aplicar un factor de tamaño por etapa (aprox. bebé 0.70, pequeño 0.80, explorador 0.90, adulto 1.0, ajustable) con los pies apoyados en la misma línea de suelo, para que el crecimiento se perciba aun con el arte actual. Los anclajes deben seguir funcionando con ese factor.
+4) COMPROBACIONES FINALES Y COMMIT
+- Ejecuta npm.cmd test, npm.cmd run lint y npm.cmd run build DESPUÉS del último cambio (el lint anterior se ejecutó antes de una edición final).
+- Confirma con git status que no queden scripts temporales sueltos. Los scripts útiles de QA van en scripts/ con un comentario de uso.
+- Haz commit en la rama claude/keen-pasteur-ctllxp con el mensaje "feat(mascotas): Fase 1 anclajes, escala por etapa y compatibilidad de accesorios". NO hagas push: lo hará el usuario.
 
 RESTRICCIONES
-- No cambiar economía, precios, claves de localStorage, IDs de mascota, de etapa ni de accesorio. Las partidas guardadas deben cargar sin pérdida.
-- No tocar EVIDENCIA A4 ni el ZIP de recuperación. No regenerar arte de mascotas en esta fase. No añadir dependencias.
-- No hacer push ni despliegues.
+Las mismas de la Fase 1: no tocar economía, claves de localStorage ni IDs; no tocar EVIDENCIA A4; no regenerar el arte de mascotas; no añadir dependencias; no hacer push ni despliegues.
 
 CRITERIOS DE ACEPTACIÓN
-1. WEARABLE_CONFIG ya no contiene 144 entradas manuales; la posición sale de anclajes + reglas (correcciones puntuales justificadas y contadas en el informe).
-2. Capturas antes/después de la matriz completa; al menos el 80 % de combinaciones marcadas como OK y el resto bloqueadas en la Tienda con un mensaje claro.
-3. Lo que se ve en el probador coincide con la pantalla principal, el álbum, la evolución y los resultados.
-4. La mascota se ve visiblemente más pequeña de bebé que de adulta en la pantalla principal.
-5. npm test, lint y build sin errores; nuevas pruebas unitarias para la compatibilidad y para cargar un guardado con un accesorio incompatible equipado.
+1. Existen docs/evidencias_v4/antes/ y docs/evidencias_v4/despues/ con 39 capturas cada una y la comparativa enlazada.
+2. La matriz tiene un criterio escrito y es coherente con las capturas.
+3. El número de combinaciones bloqueadas es igual o menor que 20, con la razón de cada bloqueo.
+4. test, lint y build se ejecutaron después del último cambio y no tienen errores.
+5. Hay un commit local con todo el trabajo de la Fase 1 y la Fase 1b.
 
-INFORME FINAL (máx. 20 líneas) en docs/delegacion/informe-final-v4-f1.txt: ESTADO (COMPLETO/PARCIAL/BLOQUEADO), archivos tocados, % de combinaciones OK por especie, combinaciones bloqueadas, resultados de test/lint/build, ruta de las evidencias y riesgos para la Fase 2 (arte).
+INFORME FINAL (máx. 15 líneas) en docs/delegacion/informe-final-v4-f1b.txt: ESTADO, combinaciones OK antes/después por especie, bloqueos recuperados y restantes, resultados de test/lint/build (con hora), hash del commit y rutas de las evidencias.

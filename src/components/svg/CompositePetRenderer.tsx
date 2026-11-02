@@ -1,4 +1,5 @@
 import type { GrowthStage, PetId, PetReaction, EquippedAccessories } from '../../game/types'
+import { getStageScaleTransform } from '../../game/petAnchors'
 import { PetRenderer } from './PetIllustrations'
 import { AccessoryLayer } from './PetAccessories'
 
@@ -15,7 +16,7 @@ export interface CompositePetRendererProps {
  * CompositePetRenderer
  * Arquitectura modular de composición de capas (SVG DOM Stacking):
  * 1. Capa de Espalda (z-index inferior): Mochilas, capas detrás del cuerpo.
- * 2. Mascota Base Anatómica: 12 formas vectoriales intactas con sus 4 reacciones.
+ * 2. Mascota Base Anatómica: 12 formas con soporte de escala progresiva por etapa.
  * 3. Capa de Cuello / Pecho: Pañuelos, medallas, collares sobre el pecho.
  * 4. Capa de Rostro: Gafas y lentes sobre los ojos sin obstruir boca.
  * 5. Capa de Cabeza: Gorras, sombreros, coronas y lazos sobre la frente/corona.
@@ -51,7 +52,7 @@ export const CompositePetRenderer = ({
   const isHappy = reaction === 'happy' || reaction === 'tap'
   const isPetting = reaction === 'petting' || reaction === 'pet'
   const isEating = reaction === 'eating' || reaction === 'feed'
-  const numSize = typeof size === 'number' ? size : 200
+  const scaleTransform = getStageScaleTransform(stage)
 
   return (
     <div
@@ -80,29 +81,33 @@ export const CompositePetRenderer = ({
         {backAcc && (
           <svg
             viewBox="0 0 200 200"
-            width={numSize}
-            height={numSize}
+            width="100%"
+            height="100%"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
             style={{
               position: 'absolute',
               inset: 0,
+              width: '100%',
+              height: '100%',
               pointerEvents: 'none',
               zIndex: 1,
             }}
             aria-hidden="true"
           >
-            <AccessoryLayer accessoryId={backAcc} petId={id} stage={stage} />
+            <g transform={scaleTransform}>
+              <AccessoryLayer accessoryId={backAcc} petId={id} stage={stage} />
+            </g>
           </svg>
         )}
 
         {/* 2. Mascota base anatómica (cuerpo, extremidades, cabeza, ojos) */}
-        <div style={{ position: 'relative', zIndex: 2, display: 'flex' }}>
+        <div style={{ position: 'relative', zIndex: 2, display: 'flex', width: '100%', height: '100%' }}>
           <PetRenderer
             id={id}
             stage={stage}
             reaction={reaction}
-            size={size}
+            size="100%"
           />
         </div>
 
@@ -110,25 +115,28 @@ export const CompositePetRenderer = ({
         {(neckAcc || faceAcc || headAcc) && (
           <svg
             viewBox="0 0 200 200"
-            width={numSize}
-            height={numSize}
+            width="100%"
+            height="100%"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
             style={{
               position: 'absolute',
               inset: 0,
+              width: '100%',
+              height: '100%',
               pointerEvents: 'none',
               zIndex: 3,
             }}
             aria-hidden="true"
           >
-            {neckAcc && <AccessoryLayer accessoryId={neckAcc} petId={id} stage={stage} />}
-            {faceAcc && <AccessoryLayer accessoryId={faceAcc} petId={id} stage={stage} />}
-            {headAcc && <AccessoryLayer accessoryId={headAcc} petId={id} stage={stage} />}
+            <g transform={scaleTransform}>
+              {neckAcc && <AccessoryLayer accessoryId={neckAcc} petId={id} stage={stage} />}
+              {faceAcc && <AccessoryLayer accessoryId={faceAcc} petId={id} stage={stage} />}
+              {headAcc && <AccessoryLayer accessoryId={headAcc} petId={id} stage={stage} />}
+            </g>
           </svg>
         )}
       </div>
     </div>
   )
 }
-

@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import type { ActiveMatch, PetProgress, ActivityId } from '../game/types'
 import { ACTIVITIES_CATALOG, getPetTotalScore } from '../game/rules'
-import { PetRenderer } from '../components/svg/PetIllustrations'
+import { CompositePetRenderer } from '../components/svg/CompositePetRenderer'
 import {
   StarIcon,
   FoodFruitIcon,
@@ -95,14 +95,15 @@ export default function ResultScreen({
           </section>
         )}
 
-        {/* Mascota protagonista alegre */}
+        {/* Mascota protagonista alegre con accesorios */}
         <section className="result-pet-stage" aria-label={`${pet.name} celebra contigo`}>
           <div className="result-pet-glow" />
-          <PetRenderer
+          <CompositePetRenderer
             id={pet.id}
             stage={pet.stage}
             reaction="happy"
             size={190}
+            equippedAccessories={pet.equippedAccessories}
           />
         </section>
 

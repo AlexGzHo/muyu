@@ -619,6 +619,7 @@ export default function PetHomeScreen({
           petId={evolutionData.petId}
           petName={evolutionData.petName}
           stage={evolutionData.stage}
+          equippedAccessories={pet.equippedAccessories}
           onClose={() => setEvolutionData(null)}
         />
       )}

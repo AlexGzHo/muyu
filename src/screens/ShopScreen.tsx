@@ -11,6 +11,7 @@ import {
   ACCESSORIES_CATALOG,
   getPetCoinsBalance,
 } from '../game/rules'
+import { isAccessoryCompatible } from '../game/petAnchors'
 import { CompositePetRenderer } from '../components/svg/CompositePetRenderer'
 import { AccessoryGraphic } from '../components/svg/PetAccessories'
 import {
@@ -84,6 +85,12 @@ export default function ShopScreen({
 
   // Probar accesorio (no cuesta puntos)
   const handleTryOn = (item: AccessoryItem) => {
+    const compat = isAccessoryCompatible(item.id, selectedPetId, currentPet.stage)
+    if (!compat.compatible) {
+      showToast(compat.reason || `No disponible para ${currentPet.name}`)
+      return
+    }
+
     soundManager.playClick(soundEnabled)
     setPreviewAccessories((prev) => ({
       ...prev,
@@ -102,6 +109,11 @@ export default function ShopScreen({
   // Comprar accesorio
   const handleBuy = (item: AccessoryItem) => {
     if (isProcessing) return
+    const compat = isAccessoryCompatible(item.id, selectedPetId, currentPet.stage)
+    if (!compat.compatible) {
+      showToast(compat.reason || `No disponible para ${currentPet.name}`)
+      return
+    }
     if (purchased.includes(item.id)) return
 
     if (coinsBalance < item.price) {
@@ -132,6 +144,11 @@ export default function ShopScreen({
   // Equipar accesorio ya comprado
   const handleEquip = (item: AccessoryItem) => {
     if (!purchased.includes(item.id)) return
+    const compat = isAccessoryCompatible(item.id, selectedPetId, currentPet.stage)
+    if (!compat.compatible) {
+      showToast(compat.reason || `No disponible para ${currentPet.name}`)
+      return
+    }
     soundManager.playClick(soundEnabled)
     // Limpiar prueba temporal
     setPreviewAccessories((prev) => {
@@ -299,6 +316,8 @@ export default function ShopScreen({
           {/* Grid de accesorios disponibles en la categoría */}
           <div className="shop-items-grid" role="list" aria-label={`Accesorios de ${activeCategory}`}>
             {categoryItems.map((item) => {
+              const compat = isAccessoryCompatible(item.id, selectedPetId, currentPet.stage)
+              const isCompatible = compat.compatible
               const isOwned = purchased.includes(item.id)
               const isCurrentlyEquipped = equipped[item.category] === item.id
               const isBeingTested = previewAccessories[item.category] === item.id
@@ -307,7 +326,7 @@ export default function ShopScreen({
               return (
                 <div
                   key={item.id}
-                  className={`shop-item-card ${isCurrentlyEquipped ? 'item-equipped' : ''} ${isBeingTested ? 'item-testing' : ''}`}
+                  className={`shop-item-card ${isCurrentlyEquipped ? 'item-equipped' : ''} ${isBeingTested ? 'item-testing' : ''} ${!isCompatible ? 'item-incompatible' : ''}`}
                   role="listitem"
                 >
                   {/* Vista previa SVG del accesorio individual */}
@@ -328,6 +347,11 @@ export default function ShopScreen({
                   <div className="shop-item-info">
                     <span className="shop-item-name">{item.name}</span>
                     <span className="shop-item-desc">{item.description}</span>
+                    {!isCompatible && (
+                      <span className="shop-item-incompatible-badge" role="note">
+                        {compat.reason || `No disponible para ${currentPet.name}`}
+                      </span>
+                    )}
                   </div>
 
                   {/* Estado de precio y acciones */}
@@ -342,45 +366,58 @@ export default function ShopScreen({
                     )}
 
                     <div className="shop-item-buttons-row">
-                      {/* Botón Probar (siempre disponible para ver cómo queda) */}
-                      <button
-                        type="button"
-                        className="btn-shop-action btn-try"
-                        onClick={() => handleTryOn(item)}
-                        aria-label={`Probar ${item.name}`}
-                      >
-                        Probar
-                      </button>
-
-                      {/* Botón Comprar o Equipar / Quitar */}
-                      {!isOwned ? (
+                      {!isCompatible ? (
                         <button
                           type="button"
-                          className="btn-shop-action btn-buy"
-                          disabled={!canAfford || isProcessing}
-                          onClick={() => handleBuy(item)}
-                          aria-label={`Comprar ${item.name} por ${item.price} puntos`}
+                          className="btn-shop-action btn-disabled"
+                          disabled={true}
+                          aria-label={compat.reason || 'Accesorio no compatible'}
                         >
-                          Comprar
-                        </button>
-                      ) : isCurrentlyEquipped ? (
-                        <button
-                          type="button"
-                          className="btn-shop-action btn-unequip"
-                          onClick={() => handleUnequip(item.category)}
-                          aria-label={`Quitar ${item.name}`}
-                        >
-                          Quitar
+                          No disponible
                         </button>
                       ) : (
-                        <button
-                          type="button"
-                          className="btn-shop-action btn-equip"
-                          onClick={() => handleEquip(item)}
-                          aria-label={`Equipar ${item.name}`}
-                        >
-                          Poner
-                        </button>
+                        <>
+                          {/* Botón Probar (siempre disponible para ver cómo queda) */}
+                          <button
+                            type="button"
+                            className="btn-shop-action btn-try"
+                            onClick={() => handleTryOn(item)}
+                            aria-label={`Probar ${item.name}`}
+                          >
+                            Probar
+                          </button>
+
+                          {/* Botón Comprar o Equipar / Quitar */}
+                          {!isOwned ? (
+                            <button
+                              type="button"
+                              className="btn-shop-action btn-buy"
+                              disabled={!canAfford || isProcessing}
+                              onClick={() => handleBuy(item)}
+                              aria-label={`Comprar ${item.name} por ${item.price} puntos`}
+                            >
+                              Comprar
+                            </button>
+                          ) : isCurrentlyEquipped ? (
+                            <button
+                              type="button"
+                              className="btn-shop-action btn-unequip"
+                              onClick={() => handleUnequip(item.category)}
+                              aria-label={`Quitar ${item.name}`}
+                            >
+                              Quitar
+                            </button>
+                          ) : (
+                            <button
+                              type="button"
+                              className="btn-shop-action btn-equip"
+                              onClick={() => handleEquip(item)}
+                              aria-label={`Equipar ${item.name}`}
+                            >
+                              Poner
+                            </button>
+                          )}
+                        </>
                       )}
                     </div>
                   </div>

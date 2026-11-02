@@ -1,5 +1,12 @@
-import type { SVGProps } from 'react'
+import { useId, type SVGProps } from 'react'
 import type { AccessoryId, GrowthStage, PetId } from '../../game/types'
+import {
+  calculateWearableTransform,
+  isAccessoryCompatible,
+  type WearableTransform,
+} from '../../game/petAnchors'
+
+export type { WearableTransform }
 
 export interface AccessoryLayerProps extends SVGProps<SVGSVGElement> {
   accessoryId: AccessoryId
@@ -7,297 +14,6 @@ export interface AccessoryLayerProps extends SVGProps<SVGSVGElement> {
   stage: GrowthStage
   size?: number | string
   className?: string
-}
-
-/* ============================================================
-   TRANSFORMACIONES Y ANCLAJES ANATÓMICOS EXACTOS
-   Sistema de composición vestibular por especie y etapa.
-   Coordenadas en el sistema viewBox "0 0 200 200"
-   ============================================================ */
-
-export interface WearableTransform {
-  x: number
-  y: number
-  scale: number
-  rotation?: number
-}
-
-/**
- * Matriz Anatómica Específica por Accesorio, Especie y Etapa Evolutiva.
- * En lugar de agrupar todos los accesorios de cabeza o rostro con el mismo offset,
- * cada pieza tiene afinamiento exacto sobre la anatomía de la mascota.
- */
-const WEARABLE_CONFIG: Record<
-  AccessoryId,
-  Record<PetId, Record<GrowthStage, WearableTransform>>
-> = {
-  // ==========================================
-  // CABEZA (head)
-  // ==========================================
-  orange_cap: {
-    monkey: {
-      baby: { x: 99, y: 44, scale: 0.98, rotation: 0 },
-      sprout: { x: 92, y: 46, scale: 0.92, rotation: -4 },
-      young: { x: 109, y: 50, scale: 0.92, rotation: 6 },
-      adult: { x: 87, y: 40, scale: 0.88, rotation: -2 },
-    },
-    turtle: {
-      baby: { x: 111, y: 48, scale: 0.78, rotation: 6 },
-      sprout: { x: 130, y: 42, scale: 0.80, rotation: 8 },
-      young: { x: 129, y: 66, scale: 0.78, rotation: 10 },
-      adult: { x: 147, y: 50, scale: 0.82, rotation: 8 },
-    },
-    toucan: {
-      baby: { x: 92, y: 42, scale: 0.82, rotation: -4 },
-      sprout: { x: 102, y: 40, scale: 0.84, rotation: -2 },
-      young: { x: 112, y: 56, scale: 0.85, rotation: -2 },
-      adult: { x: 108, y: 40, scale: 0.88, rotation: -2 },
-    },
-  },
-
-  explorer_hat: {
-    monkey: {
-      baby: { x: 99, y: 42, scale: 0.92, rotation: 0 },
-      sprout: { x: 92, y: 44, scale: 0.88, rotation: -4 },
-      young: { x: 109, y: 48, scale: 0.88, rotation: 6 },
-      adult: { x: 87, y: 38, scale: 0.84, rotation: -2 },
-    },
-    turtle: {
-      baby: { x: 111, y: 46, scale: 0.74, rotation: 6 },
-      sprout: { x: 130, y: 40, scale: 0.76, rotation: 8 },
-      young: { x: 129, y: 64, scale: 0.74, rotation: 10 },
-      adult: { x: 147, y: 48, scale: 0.78, rotation: 8 },
-    },
-    toucan: {
-      baby: { x: 92, y: 40, scale: 0.76, rotation: -4 },
-      sprout: { x: 102, y: 38, scale: 0.78, rotation: -2 },
-      young: { x: 112, y: 54, scale: 0.80, rotation: -2 },
-      adult: { x: 108, y: 38, scale: 0.82, rotation: -2 },
-    },
-  },
-
-  leaf_crown: {
-    monkey: {
-      baby: { x: 99, y: 44, scale: 0.96, rotation: 0 },
-      sprout: { x: 92, y: 46, scale: 0.90, rotation: -4 },
-      young: { x: 109, y: 50, scale: 0.92, rotation: 6 },
-      adult: { x: 87, y: 42, scale: 0.86, rotation: -2 },
-    },
-    turtle: {
-      baby: { x: 111, y: 50, scale: 0.78, rotation: 6 },
-      sprout: { x: 130, y: 44, scale: 0.80, rotation: 8 },
-      young: { x: 129, y: 68, scale: 0.78, rotation: 10 },
-      adult: { x: 147, y: 52, scale: 0.82, rotation: 8 },
-    },
-    toucan: {
-      baby: { x: 94, y: 44, scale: 0.82, rotation: -4 },
-      sprout: { x: 104, y: 42, scale: 0.84, rotation: -2 },
-      young: { x: 113, y: 58, scale: 0.86, rotation: -2 },
-      adult: { x: 110, y: 42, scale: 0.88, rotation: -2 },
-    },
-  },
-
-  color_bow: {
-    monkey: {
-      // En la oreja/copete del monito
-      baby: { x: 124, y: 46, scale: 0.88, rotation: 15 },
-      sprout: { x: 116, y: 48, scale: 0.84, rotation: 12 },
-      young: { x: 130, y: 54, scale: 0.85, rotation: 18 },
-      adult: { x: 108, y: 44, scale: 0.82, rotation: 14 },
-    },
-    turtle: {
-      baby: { x: 128, y: 48, scale: 0.75, rotation: 20 },
-      sprout: { x: 146, y: 42, scale: 0.76, rotation: 22 },
-      young: { x: 144, y: 64, scale: 0.75, rotation: 25 },
-      adult: { x: 162, y: 48, scale: 0.78, rotation: 22 },
-    },
-    toucan: {
-      baby: { x: 82, y: 44, scale: 0.80, rotation: -12 },
-      sprout: { x: 92, y: 40, scale: 0.82, rotation: -10 },
-      young: { x: 102, y: 54, scale: 0.84, rotation: -8 },
-      adult: { x: 98, y: 40, scale: 0.85, rotation: -10 },
-    },
-  },
-
-  // ==========================================
-  // ROSTRO (face: Lentes adaptados a la especie)
-  // ==========================================
-  round_glasses: {
-    monkey: {
-      baby: { x: 99, y: 73, scale: 0.90, rotation: 0 },
-      sprout: { x: 92, y: 72, scale: 0.85, rotation: -4 },
-      young: { x: 109, y: 75, scale: 0.85, rotation: 6 },
-      adult: { x: 87, y: 64, scale: 0.80, rotation: -2 },
-    },
-    turtle: {
-      baby: { x: 116, y: 72, scale: 0.72, rotation: 8 },
-      sprout: { x: 134, y: 66, scale: 0.74, rotation: 10 },
-      young: { x: 133, y: 88, scale: 0.72, rotation: 12 },
-      adult: { x: 151, y: 72, scale: 0.76, rotation: 10 },
-    },
-    toucan: {
-      // En tucán, el monóculo se asienta sobre el ojo y su borde posterior sin tapar el pico
-      baby: { x: 84, y: 62, scale: 0.74, rotation: -4 },
-      sprout: { x: 94, y: 60, scale: 0.76, rotation: -2 },
-      young: { x: 104, y: 76, scale: 0.78, rotation: -2 },
-      adult: { x: 100, y: 60, scale: 0.80, rotation: -2 },
-    },
-  },
-
-  star_glasses: {
-    monkey: {
-      baby: { x: 99, y: 73, scale: 0.88, rotation: 0 },
-      sprout: { x: 92, y: 72, scale: 0.84, rotation: -4 },
-      young: { x: 109, y: 75, scale: 0.84, rotation: 6 },
-      adult: { x: 87, y: 64, scale: 0.78, rotation: -2 },
-    },
-    turtle: {
-      baby: { x: 116, y: 72, scale: 0.70, rotation: 8 },
-      sprout: { x: 134, y: 66, scale: 0.72, rotation: 10 },
-      young: { x: 133, y: 88, scale: 0.70, rotation: 12 },
-      adult: { x: 151, y: 72, scale: 0.74, rotation: 10 },
-    },
-    toucan: {
-      baby: { x: 84, y: 62, scale: 0.73, rotation: -4 },
-      sprout: { x: 94, y: 60, scale: 0.75, rotation: -2 },
-      young: { x: 104, y: 76, scale: 0.76, rotation: -2 },
-      adult: { x: 100, y: 60, scale: 0.78, rotation: -2 },
-    },
-  },
-
-  // ==========================================
-  // CUELLO / PECHO (neck)
-  // ==========================================
-  explorer_scarf: {
-    monkey: {
-      baby: { x: 99, y: 106, scale: 0.90, rotation: 0 },
-      sprout: { x: 93, y: 104, scale: 0.86, rotation: -2 },
-      young: { x: 106, y: 110, scale: 0.90, rotation: 4 },
-      adult: { x: 88, y: 96, scale: 0.86, rotation: 0 },
-    },
-    turtle: {
-      baby: { x: 104, y: 108, scale: 0.78, rotation: 6 },
-      sprout: { x: 120, y: 102, scale: 0.80, rotation: 8 },
-      young: { x: 118, y: 120, scale: 0.80, rotation: 10 },
-      adult: { x: 136, y: 110, scale: 0.85, rotation: 8 },
-    },
-    toucan: {
-      baby: { x: 96, y: 104, scale: 0.82, rotation: 0 },
-      sprout: { x: 104, y: 102, scale: 0.85, rotation: 0 },
-      young: { x: 112, y: 114, scale: 0.86, rotation: 0 },
-      adult: { x: 108, y: 100, scale: 0.90, rotation: 0 },
-    },
-  },
-
-  gold_medal: {
-    monkey: {
-      baby: { x: 99, y: 102, scale: 0.88, rotation: 0 },
-      sprout: { x: 93, y: 100, scale: 0.84, rotation: -2 },
-      young: { x: 106, y: 106, scale: 0.88, rotation: 4 },
-      adult: { x: 88, y: 92, scale: 0.84, rotation: 0 },
-    },
-    turtle: {
-      baby: { x: 104, y: 104, scale: 0.76, rotation: 4 },
-      sprout: { x: 120, y: 98, scale: 0.78, rotation: 6 },
-      young: { x: 118, y: 116, scale: 0.78, rotation: 8 },
-      adult: { x: 136, y: 106, scale: 0.82, rotation: 6 },
-    },
-    toucan: {
-      baby: { x: 96, y: 102, scale: 0.80, rotation: 0 },
-      sprout: { x: 104, y: 100, scale: 0.82, rotation: 0 },
-      young: { x: 112, y: 112, scale: 0.84, rotation: 0 },
-      adult: { x: 108, y: 98, scale: 0.88, rotation: 0 },
-    },
-  },
-
-  flower_necklace: {
-    monkey: {
-      baby: { x: 99, y: 104, scale: 0.92, rotation: 0 },
-      sprout: { x: 93, y: 102, scale: 0.88, rotation: -2 },
-      young: { x: 106, y: 108, scale: 0.92, rotation: 4 },
-      adult: { x: 88, y: 94, scale: 0.88, rotation: 0 },
-    },
-    turtle: {
-      baby: { x: 104, y: 106, scale: 0.78, rotation: 6 },
-      sprout: { x: 120, y: 100, scale: 0.80, rotation: 8 },
-      young: { x: 118, y: 118, scale: 0.80, rotation: 10 },
-      adult: { x: 136, y: 108, scale: 0.84, rotation: 8 },
-    },
-    toucan: {
-      baby: { x: 96, y: 102, scale: 0.84, rotation: 0 },
-      sprout: { x: 104, y: 100, scale: 0.86, rotation: 0 },
-      young: { x: 112, y: 112, scale: 0.88, rotation: 0 },
-      adult: { x: 108, y: 98, scale: 0.92, rotation: 0 },
-    },
-  },
-
-  // ==========================================
-  // ESPALDA / CUERPO (back: Ubicadas con perspectiva)
-  // ==========================================
-  small_backpack: {
-    monkey: {
-      baby: { x: 74, y: 116, scale: 0.86, rotation: 6 },
-      sprout: { x: 68, y: 114, scale: 0.84, rotation: 8 },
-      young: { x: 72, y: 118, scale: 0.88, rotation: 10 },
-      adult: { x: 64, y: 110, scale: 0.85, rotation: 6 },
-    },
-    turtle: {
-      // En tortuga, la mochila reposa sobre el caparazón posterior
-      baby: { x: 68, y: 112, scale: 0.80, rotation: -12 },
-      sprout: { x: 72, y: 106, scale: 0.84, rotation: -14 },
-      young: { x: 64, y: 118, scale: 0.84, rotation: -16 },
-      adult: { x: 74, y: 114, scale: 0.95, rotation: -14 },
-    },
-    toucan: {
-      // En tucán, la mochila asoma tras el ala/lomo izquierdo
-      baby: { x: 62, y: 116, scale: 0.80, rotation: 8 },
-      sprout: { x: 66, y: 114, scale: 0.84, rotation: 8 },
-      young: { x: 64, y: 120, scale: 0.86, rotation: 10 },
-      adult: { x: 60, y: 114, scale: 0.90, rotation: 8 },
-    },
-  },
-
-  explorer_backpack: {
-    monkey: {
-      baby: { x: 74, y: 114, scale: 0.84, rotation: 6 },
-      sprout: { x: 68, y: 112, scale: 0.82, rotation: 8 },
-      young: { x: 72, y: 116, scale: 0.86, rotation: 10 },
-      adult: { x: 64, y: 108, scale: 0.84, rotation: 6 },
-    },
-    turtle: {
-      baby: { x: 68, y: 110, scale: 0.78, rotation: -12 },
-      sprout: { x: 72, y: 104, scale: 0.82, rotation: -14 },
-      young: { x: 64, y: 116, scale: 0.82, rotation: -16 },
-      adult: { x: 74, y: 112, scale: 0.92, rotation: -14 },
-    },
-    toucan: {
-      baby: { x: 62, y: 114, scale: 0.78, rotation: 8 },
-      sprout: { x: 66, y: 112, scale: 0.82, rotation: 8 },
-      young: { x: 64, y: 118, scale: 0.84, rotation: 10 },
-      adult: { x: 60, y: 112, scale: 0.88, rotation: 8 },
-    },
-  },
-
-  short_cape: {
-    monkey: {
-      baby: { x: 99, y: 116, scale: 0.95, rotation: 0 },
-      sprout: { x: 93, y: 114, scale: 0.92, rotation: -2 },
-      young: { x: 102, y: 120, scale: 0.96, rotation: 4 },
-      adult: { x: 88, y: 110, scale: 0.92, rotation: 0 },
-    },
-    turtle: {
-      baby: { x: 80, y: 114, scale: 0.85, rotation: -8 },
-      sprout: { x: 88, y: 108, scale: 0.88, rotation: -10 },
-      young: { x: 82, y: 120, scale: 0.88, rotation: -12 },
-      adult: { x: 94, y: 116, scale: 0.98, rotation: -10 },
-    },
-    toucan: {
-      baby: { x: 84, y: 118, scale: 0.86, rotation: 4 },
-      sprout: { x: 88, y: 116, scale: 0.90, rotation: 4 },
-      young: { x: 90, y: 122, scale: 0.94, rotation: 6 },
-      adult: { x: 86, y: 116, scale: 0.98, rotation: 4 },
-    },
-  },
 }
 
 /* ============================================================
@@ -317,6 +33,8 @@ export const AccessoryGraphic = ({
   accessoryId,
   petId = 'monkey',
 }: AccessoryGraphicProps) => {
+  const uid = useId().replace(/[^a-zA-Z0-9_-]/g, '')
+  const capGradId = `cap-orange-grad-${uid}`
   switch (accessoryId) {
     // ----------------------------------------------------
     // CABEZA
@@ -327,7 +45,7 @@ export const AccessoryGraphic = ({
           {/* Corona de la gorra con volumen e iluminación superior */}
           <path
             d="M-26 2C-26 -19 26 -19 26 2Z"
-            fill="url(#cap-orange-grad)"
+            fill={`url(#${capGradId})`}
             stroke="#D95F00"
             strokeWidth="3"
             strokeLinejoin="round"
@@ -361,7 +79,7 @@ export const AccessoryGraphic = ({
           />
           {/* Gradiente interno para volumen */}
           <defs>
-            <linearGradient id="cap-orange-grad" x1="0" y1="-19" x2="0" y2="2" gradientUnits="userSpaceOnUse">
+            <linearGradient id={capGradId} x1="0" y1="-19" x2="0" y2="2" gradientUnits="userSpaceOnUse">
               <stop offset="0%" stopColor="#FFA14D" />
               <stop offset="70%" stopColor="#FF7A00" />
               <stop offset="100%" stopColor="#E65C00" />
@@ -860,12 +578,12 @@ export const AccessoryLayer = ({
   petId: PetId
   stage: GrowthStage
 }) => {
-  const transformConfig = WEARABLE_CONFIG[accessoryId]?.[petId]?.[stage] ?? {
-    x: 100,
-    y: 100,
-    scale: 1,
+  const compat = isAccessoryCompatible(accessoryId, petId, stage)
+  if (!compat.compatible) {
+    return null
   }
 
+  const transformConfig = calculateWearableTransform(accessoryId, petId, stage)
   const rot = transformConfig.rotation ? ` rotate(${transformConfig.rotation})` : ''
   const transform = `translate(${transformConfig.x}, ${transformConfig.y}) scale(${transformConfig.scale})${rot}`
 

@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import type { PetId, PetProgress } from '../game/types'
-import { PetRenderer } from '../components/svg/PetIllustrations'
+import { CompositePetRenderer } from '../components/svg/CompositePetRenderer'
 import { BackIcon, SproutStageIcon } from '../components/svg/Icons'
 import { TropicalHills } from '../components/svg/Scenery'
 
@@ -65,11 +65,12 @@ export default function SelectPetScreen({
               aria-label={`Elegir ${item.name}`}
             >
               <div className="pet-card-avatar">
-                <PetRenderer
+                <CompositePetRenderer
                   id={item.id}
                   stage={pet.stage}
                   reaction={isAnimating ? 'tap' : 'none'}
                   size={150}
+                  equippedAccessories={pet.equippedAccessories}
                 />
               </div>
 

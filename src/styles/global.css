@@ -4701,6 +4701,32 @@ body {
   border: 2px solid #FFAAA0;
 }
 
+.btn-shop-action.btn-disabled {
+  background: #E2E8F0;
+  color: #718096;
+  border: 2px dashed #CBD5E0;
+  cursor: not-allowed;
+  opacity: 0.85;
+}
+
+.shop-item-card.item-incompatible {
+  opacity: 0.75;
+  border-color: #E2E8F0;
+  background: #F8FAFC;
+}
+
+.shop-item-incompatible-badge {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #C53030;
+  background: #FFF5F5;
+  border: 1px solid #FEB2B2;
+  border-radius: var(--radius-sm);
+  padding: 3px 6px;
+  line-height: 1.25;
+}
+
 /* Toast accesible */
 .shop-toast-alert {
   position: fixed;

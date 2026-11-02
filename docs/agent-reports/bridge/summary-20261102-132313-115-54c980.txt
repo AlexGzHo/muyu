@@ -1,0 +1,4 @@
+ID: 20261102-132313-115-54c980
+Estado: BLOQUEADO
+Detalle: Antigravity respondio SUCCESS pero no creo el informe de la ejecucion 1.
+Informe: C:\Proyectos\Muyu\docs\agent-reports\bridge\report-20261102-132313-115-54c980-1.md

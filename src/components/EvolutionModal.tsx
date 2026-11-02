@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
-import type { PetId, GrowthStage } from '../game/types'
-import { PetRenderer } from './svg/PetIllustrations'
+import type { PetId, GrowthStage, EquippedAccessories } from '../game/types'
+import { CompositePetRenderer } from './svg/CompositePetRenderer'
 import { SparkleIcon, StarIcon } from './svg/Icons'
 
 interface EvolutionModalProps {
@@ -8,6 +8,7 @@ interface EvolutionModalProps {
   petId: PetId
   petName: string
   stage: GrowthStage
+  equippedAccessories?: EquippedAccessories | null
   onClose: () => void
 }
 
@@ -44,6 +45,7 @@ export default function EvolutionModal({
   petId,
   petName,
   stage,
+  equippedAccessories = null,
   onClose,
 }: EvolutionModalProps) {
   useEffect(() => {
@@ -82,14 +84,15 @@ export default function EvolutionModal({
           ¡{petName} ha alcanzado la etapa de <strong>{stageLabel}</strong>!
         </p>
 
-        {/* Mascota en gran formato con aura de luz */}
+        {/* Mascota en gran formato con aura de luz y accesorios */}
         <div className="evolution-pet-wrap">
           <div className="evolution-sparks-bg" aria-hidden="true" />
-          <PetRenderer
+          <CompositePetRenderer
             id={petId}
             stage={stage}
             reaction="happy"
             size={220}
+            equippedAccessories={equippedAccessories}
             className="evolution-pet-avatar"
           />
         </div>

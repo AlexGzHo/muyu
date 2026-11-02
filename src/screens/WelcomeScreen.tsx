@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import type { PetProgress, DifficultyLevel } from '../game/types'
-import { PetRenderer } from '../components/svg/PetIllustrations'
+import { CompositePetRenderer } from '../components/svg/CompositePetRenderer'
 import {
   PlayIcon,
   SoundOnIcon,
@@ -115,11 +115,12 @@ export default function WelcomeScreen({
             onClick={() => triggerPetGreet('monkey')}
             aria-label={`Saludar a ${pets.monkey?.name || 'Monito'}`}
           >
-            <PetRenderer
+            <CompositePetRenderer
               id="monkey"
               stage={pets.monkey?.stage || 'baby'}
               reaction={petReaction.monkey}
               size={110}
+              equippedAccessories={pets.monkey?.equippedAccessories}
             />
           </button>
 
@@ -130,11 +131,12 @@ export default function WelcomeScreen({
             onClick={() => triggerPetGreet('turtle')}
             aria-label={`Saludar a ${pets.turtle?.name || 'Tortuguita'}`}
           >
-            <PetRenderer
+            <CompositePetRenderer
               id="turtle"
               stage={pets.turtle?.stage || 'baby'}
               reaction={petReaction.turtle}
               size={105}
+              equippedAccessories={pets.turtle?.equippedAccessories}
             />
           </button>
 
@@ -145,11 +147,12 @@ export default function WelcomeScreen({
             onClick={() => triggerPetGreet('toucan')}
             aria-label={`Saludar a ${pets.toucan?.name || 'Tucancito'}`}
           >
-            <PetRenderer
+            <CompositePetRenderer
               id="toucan"
               stage={pets.toucan?.stage || 'baby'}
               reaction={petReaction.toucan}
               size={110}
+              equippedAccessories={pets.toucan?.equippedAccessories}
             />
           </button>
         </div>

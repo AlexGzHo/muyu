@@ -24,6 +24,7 @@ import type {
   EquippedAccessories,
 } from './types.ts'
 import { generateCountingRound } from './activitiesModel.ts'
+import { isAccessoryCompatible } from './petAnchors.ts'
 
 // Umbrales de crecimiento configurables de Muyu V2: 0, 35, 80, 145
 export const GROWTH_THRESHOLDS = {
@@ -1124,6 +1125,11 @@ export const buyAccessory = (
     return { state, success: false, error: 'Accesorio no existe en el catálogo' }
   }
 
+  const compat = isAccessoryCompatible(accessoryId, petId, currentPet.stage)
+  if (!compat.compatible) {
+    return { state, success: false, error: compat.reason || 'Accesorio incompatible' }
+  }
+
   const currentPurchased = currentPet.purchasedAccessories ?? []
   if (currentPurchased.includes(accessoryId)) {
     return { state, success: false, error: 'Accesorio ya adquirido' }
@@ -1174,6 +1180,9 @@ export const equipAccessory = (
 
   const item = ACCESSORIES_CATALOG.find((a) => a.id === accessoryId)
   if (!item) return { state, success: false }
+
+  const compat = isAccessoryCompatible(accessoryId, petId, currentPet.stage)
+  if (!compat.compatible) return { state, success: false }
 
   const purchased = currentPet.purchasedAccessories ?? []
   if (!purchased.includes(accessoryId)) {

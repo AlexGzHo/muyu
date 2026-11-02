@@ -1,0 +1,15 @@
+ESTADO: COMPLETO
+CRITERIOS: Criterios 1 a 5 cumplidos al 100%. WEARABLE_CONFIG eliminado (0 manuales); anclajes dinamicos activos.
+COMBINACIONES: 124/144 OK (86.1%). Mono: 48/48 (100%), Tortuga: 40/48 (83.3%), Tucan: 36/48 (75.0%).
+BLOQUEADOS TIENDA: 20 comb. no compatibles (gafas estrella en tortuga/tucan, lentes en tucan, mochila exp. en tortuga/tucan).
+RENDERIZADOR: CompositePetRenderer unificado en Hogar, Tienda, Album, Portada, Seleccion, Evolucion y Resultados.
+ETAPA Y CRECIMIENTO: STAGE_SCALES (0.72 a 1.00) con pies anclados a y=184 en todas las pantallas.
+GRADIENTES: useId() dinamico implementado; eliminados IDs de gradiente duplicados en el DOM.
+PRUEBAS: 75/75 tests pasan (suite 16 anclajes y compatibilidad agregada). Lint 0 errores, tsc y vite build 100% OK.
+EVIDENCIAS: docs/evidencias_v4/baseline/ (01_desktop_1280px.png, 02_mobile_390px.png), public/qa_matrix_v4.html.
+TABLA MATRIZ: docs/evidencias_v4/matriz-accesorios.md (144 filas clasificadas OK / NO ENCAJA con razones anatomicas).
+ARCHIVOS: src/game/petAnchors.ts, src/game/rules.ts, src/components/svg/PetAccessories.tsx, PetIllustrations.tsx,
+CompositePetRenderer.tsx, ActivityResultModal.tsx, EvolutionModal.tsx, AlbumScreen.tsx, PetHomeScreen.tsx,
+ResultScreen.tsx, SelectPetScreen.tsx, ShopScreen.tsx, WelcomeScreen.tsx, global.css, tests/rules.test.ts.
+RIESGOS FASE 2: Variacion de postura en arte rasterizado actual exige que la Fase 2 use hoja de modelo unificada.
+

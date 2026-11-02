@@ -102,7 +102,12 @@ export default function AlbumScreen({
               aria-label={`Ver colección de ${p.name} (${stageName})`}
             >
               <div className="tab-pet-avatar">
-                <PetRenderer id={id} stage={p.stage} size={56} />
+                <CompositePetRenderer
+                  id={id}
+                  stage={p.stage}
+                  size={56}
+                  equippedAccessories={p.equippedAccessories}
+                />
               </div>
               <div className="tab-pet-info">
                 <span className="tab-pet-name">{p.name}</span>
@@ -323,6 +328,7 @@ export default function AlbumScreen({
           petId={selectedPet}
           petName={currentPet.name}
           stage={replayingStage}
+          equippedAccessories={replayingStage === currentPet.stage ? currentPet.equippedAccessories : null}
           onClose={() => setReplayingStage(null)}
         />
       )}

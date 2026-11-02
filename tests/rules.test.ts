@@ -2005,6 +2005,125 @@ describe('15. Auditoría de Criterios Obligatorios Muyu 3.0: Ausencia de emojis 
   })
 })
 
+describe('16. Muyu 4.0: Sistema de anclajes anatómicos y compatibilidad de accesorios', () => {
+  it('garantiza compatibilidad universal para mono y bloqueo biológico justificado en tucán y tortuga', async () => {
+    const { isAccessoryCompatible, ACCESSORIES_COMPATIBILITY } = await import('../src/game/petAnchors.ts')
+    const { ACCESSORIES_CATALOG } = await import('../src/game/rules.ts')
+
+    // Mono debe ser compatible con los 12 accesorios en todas las etapas
+    for (const acc of ACCESSORIES_CATALOG) {
+      const res = isAccessoryCompatible(acc.id, 'monkey')
+      assert.equal(res.compatible, true, `Mono debe poder equipar ${acc.id}`)
+    }
+
+    // Tortuga debe bloquear star_glasses y explorer_backpack
+    const turtleStar = isAccessoryCompatible('star_glasses', 'turtle')
+    assert.equal(turtleStar.compatible, false, 'Tortuga bloquea gafas de estrella')
+    assert.match(turtleStar.reason || '', /lateral|Tortuguita/i)
+
+    const turtlePack = isAccessoryCompatible('explorer_backpack', 'turtle')
+    assert.equal(turtlePack.compatible, false, 'Tortuga bloquea mochila de explorador')
+    assert.match(turtlePack.reason || '', /caparazón|Tortuguita/i)
+
+    // Tucán debe bloquear lentes frontales y mochila de explorador por anatomía de pico y alas
+    const toucanRound = isAccessoryCompatible('round_glasses', 'toucan')
+    assert.equal(toucanRound.compatible, false, 'Tucán bloquea lentes redondos por su pico')
+
+    const toucanStar = isAccessoryCompatible('star_glasses', 'toucan')
+    assert.equal(toucanStar.compatible, false, 'Tucán bloquea gafas de estrella por su pico')
+
+    const toucanPack = isAccessoryCompatible('explorer_backpack', 'toucan')
+    assert.equal(toucanPack.compatible, false, 'Tucán bloquea mochila pesada por sus alas')
+  })
+
+  it('buyAccessory y equipAccessory rechazan accesorios incompatibles protegiendo el saldo canjeable', () => {
+    const state = createDefaultGameState()
+    state.pets.toucan.coinsBalance = 100
+
+    // Intentar comprar gafas de estrella para el tucán (incompatible)
+    const buyRes = buyAccessory(state, 'toucan', 'star_glasses')
+    assert.equal(buyRes.success, false, 'Rechaza comprar accesorio incompatible')
+    assert.equal(buyRes.state.pets.toucan.coinsBalance, 100, 'Conserva el saldo intacto')
+
+    // Intentar equipar directamente accesorio incompatible
+    const equipRes = equipAccessory(state, 'toucan', 'star_glasses')
+    assert.equal(equipRes.success, false, 'Rechaza equipar accesorio incompatible')
+  })
+
+  it('preserva guardados con accesorios incompatibles previamente equipados sin romper la carga', () => {
+    // Simular un guardado antiguo donde un tucán tenía guardadas unas star_glasses
+    const rawLegacySave = {
+      version: 2,
+      activePetId: 'toucan',
+      pets: {
+        ...createDefaultGameState().pets,
+        toucan: {
+          ...createDefaultGameState().pets.toucan,
+          coinsBalance: 50,
+          purchasedAccessories: ['leaf_crown', 'star_glasses'],
+          equippedAccessories: {
+            head: 'leaf_crown',
+            face: 'star_glasses', // guardado antes de introducir la regla de compatibilidad
+          },
+        },
+      },
+    }
+
+    globalThis.localStorage = {
+      getItem: (key: string) => (key === STORAGE_KEY_V2 ? JSON.stringify(rawLegacySave) : null),
+      setItem: () => {},
+      removeItem: () => {},
+      clear: () => {},
+      length: 1,
+      key: () => null,
+    }
+
+    const loaded = loadGameState()
+    assert.equal(loaded.pets.toucan.coinsBalance, 50)
+    // El ítem se preserva en los datos guardados para evitar pérdida de compras del niño
+    assert.ok(loaded.pets.toucan.purchasedAccessories?.includes('star_glasses'))
+    assert.equal(loaded.pets.toucan.equippedAccessories?.face, 'star_glasses')
+  })
+
+  it('calculateWearableTransform genera transformaciones matemáticas válidas para las 144 combinaciones', async () => {
+    const { calculateWearableTransform } = await import('../src/game/petAnchors.ts')
+    const { ACCESSORIES_CATALOG } = await import('../src/game/rules.ts')
+    const pets: Array<'monkey' | 'turtle' | 'toucan'> = ['monkey', 'turtle', 'toucan']
+    const stages: Array<'baby' | 'sprout' | 'young' | 'adult'> = ['baby', 'sprout', 'young', 'adult']
+
+    let count = 0
+    for (const acc of ACCESSORIES_CATALOG) {
+      for (const pet of pets) {
+        for (const stage of stages) {
+          const t = calculateWearableTransform(acc.id, pet, stage)
+          assert.ok(Number.isFinite(t.x), `t.x debe ser número finito para ${acc.id} ${pet} ${stage}`)
+          assert.ok(Number.isFinite(t.y), `t.y debe ser número finito para ${acc.id} ${pet} ${stage}`)
+          assert.ok(t.scale > 0.5 && t.scale < 1.8, `t.scale debe ser un factor visual razonable para ${acc.id}`)
+          assert.ok(Number.isFinite(t.rotation), `t.rotation debe ser finita para ${acc.id}`)
+          count++
+        }
+      }
+    }
+    assert.equal(count, 144, 'Se calcularon dinámicamente las 144 combinaciones sin entradas manuales')
+  })
+
+  it('getStageScaleTransform y STAGE_SCALES definen crecimiento progresivo anclado a la línea de suelo', async () => {
+    const { STAGE_SCALES, getStageScaleTransform, GROUND_Y } = await import('../src/game/petAnchors.ts')
+
+    assert.equal(GROUND_Y, 184, 'Línea de suelo alineada a y = 184')
+    assert.equal(STAGE_SCALES.baby, 0.72, 'Bebé al 72% del tamaño adulto')
+    assert.equal(STAGE_SCALES.sprout, 0.81, 'Pequeño al 81% del tamaño adulto')
+    assert.equal(STAGE_SCALES.young, 0.91, 'Explorador al 91% del tamaño adulto')
+    assert.equal(STAGE_SCALES.adult, 1.0, 'Adulto al 100%')
+
+    const babyTransform = getStageScaleTransform('baby')
+    assert.ok(babyTransform.includes('184'), 'La transformación de escala ancla en y = 184')
+    assert.ok(babyTransform.includes('0.72'), 'Aplica el factor 0.72')
+    assert.equal(getStageScaleTransform('adult'), '', 'Adulto no requiere transformación de escala')
+  })
+})
+
+
 
 
 

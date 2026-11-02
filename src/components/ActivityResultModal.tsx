@@ -1,5 +1,5 @@
-import type { PetId } from '../game/types'
-import { PetRenderer } from './svg/PetIllustrations'
+import type { EquippedAccessories, GrowthStage, PetId } from '../game/types'
+import { CompositePetRenderer } from './svg/CompositePetRenderer'
 import { StarIcon, FoodFruitIcon, PlayIcon, TreeIcon, SparkleIcon } from './svg/Icons'
 
 interface ActivityResultModalProps {
@@ -7,6 +7,8 @@ interface ActivityResultModalProps {
   activityTitle: string
   petId: PetId
   petName: string
+  stage?: GrowthStage
+  equippedAccessories?: EquippedAccessories | null
   starsEarned?: number
   onReplay: () => void
   onBackToForest: () => void
@@ -17,6 +19,8 @@ export default function ActivityResultModal({
   activityTitle,
   petId,
   petName,
+  stage = 'baby',
+  equippedAccessories = null,
   starsEarned = 3,
   onReplay,
   onBackToForest,
@@ -49,9 +53,15 @@ export default function ActivityResultModal({
           ))}
         </div>
 
-        {/* Mascota activa sonriendo feliz */}
+        {/* Mascota activa sonriendo feliz con etapa real y accesorios */}
         <div className="result-pet-avatar-wrap">
-          <PetRenderer id={petId} stage="adult" reaction="happy" size={170} />
+          <CompositePetRenderer
+            id={petId}
+            stage={stage}
+            reaction="happy"
+            size={170}
+            equippedAccessories={equippedAccessories}
+          />
         </div>
 
         {/* Recompensa atómica: exactamente 1 fruta deliciosa */}

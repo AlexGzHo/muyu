@@ -2007,7 +2007,7 @@ describe('15. Auditoría de Criterios Obligatorios Muyu 3.0: Ausencia de emojis 
 
 describe('16. Muyu 4.0: Sistema de anclajes anatómicos y compatibilidad de accesorios', () => {
   it('garantiza compatibilidad universal para mono y bloqueo biológico justificado en tucán y tortuga', async () => {
-    const { isAccessoryCompatible, ACCESSORIES_COMPATIBILITY } = await import('../src/game/petAnchors.ts')
+    const { isAccessoryCompatible } = await import('../src/game/petAnchors.ts')
     const { ACCESSORIES_CATALOG } = await import('../src/game/rules.ts')
 
     // Mono debe ser compatible con los 12 accesorios en todas las etapas
@@ -2016,24 +2016,23 @@ describe('16. Muyu 4.0: Sistema de anclajes anatómicos y compatibilidad de acce
       assert.equal(res.compatible, true, `Mono debe poder equipar ${acc.id}`)
     }
 
-    // Tortuga debe bloquear star_glasses y explorer_backpack
+    // Tortuga debe ser compatible con 11 accesorios (bloquea solo star_glasses por visión lateral 3/4)
     const turtleStar = isAccessoryCompatible('star_glasses', 'turtle')
     assert.equal(turtleStar.compatible, false, 'Tortuga bloquea gafas de estrella')
     assert.match(turtleStar.reason || '', /lateral|Tortuguita/i)
 
     const turtlePack = isAccessoryCompatible('explorer_backpack', 'turtle')
-    assert.equal(turtlePack.compatible, false, 'Tortuga bloquea mochila de explorador')
-    assert.match(turtlePack.reason || '', /caparazón|Tortuguita/i)
+    assert.equal(turtlePack.compatible, true, 'Tortuga admite mochila de explorador en caparazón posterior')
 
-    // Tucán debe bloquear lentes frontales y mochila de explorador por anatomía de pico y alas
+    // Tucán admite round_glasses como monóculo y explorer_backpack en ala; bloquea gafas de estrella
     const toucanRound = isAccessoryCompatible('round_glasses', 'toucan')
-    assert.equal(toucanRound.compatible, false, 'Tucán bloquea lentes redondos por su pico')
-
-    const toucanStar = isAccessoryCompatible('star_glasses', 'toucan')
-    assert.equal(toucanStar.compatible, false, 'Tucán bloquea gafas de estrella por su pico')
+    assert.equal(toucanRound.compatible, true, 'Tucán admite lentes redondos mediante variante monóculo')
 
     const toucanPack = isAccessoryCompatible('explorer_backpack', 'toucan')
-    assert.equal(toucanPack.compatible, false, 'Tucán bloquea mochila pesada por sus alas')
+    assert.equal(toucanPack.compatible, true, 'Tucán admite mochila de explorador anclada detrás del ala')
+
+    const toucanStar = isAccessoryCompatible('star_glasses', 'toucan')
+    assert.equal(toucanStar.compatible, false, 'Tucán bloquea gafas de estrella por colisión con pico')
   })
 
   it('buyAccessory y equipAccessory rechazan accesorios incompatibles protegiendo el saldo canjeable', () => {

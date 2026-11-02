@@ -336,18 +336,15 @@ export const ACCESSORY_COMPATIBILITY: Record<
     compatiblePets: ['monkey', 'turtle', 'toucan'],
   },
 
-  // ROSTRO (Compatibilidad anatómica según visión y pico)
+  // ROSTRO (Compatibilidad anatómica: lentes redondos usan variante monóculo en tucán)
   round_glasses: {
-    compatiblePets: ['monkey', 'turtle'],
-    reasons: {
-      toucan: 'No disponible: el marco interfiere con el pico de Tucancito',
-    },
+    compatiblePets: ['monkey', 'turtle', 'toucan'],
   },
   star_glasses: {
     compatiblePets: ['monkey'],
     reasons: {
-      turtle: 'No disponible: marco rígido incompatible con la visión lateral de Tortuguita',
-      toucan: 'No disponible: marco rígido frontal incompatible con el pico de Tucancito',
+      turtle: 'No disponible: marco rígido frontal incompatible con la visión lateral a 3/4 de Tortuguita',
+      toucan: 'No disponible: marco rígido frontal colisiona y atraviesa el volumen del pico de Tucancito',
     },
   },
 
@@ -362,16 +359,12 @@ export const ACCESSORY_COMPATIBILITY: Record<
     compatiblePets: ['monkey', 'turtle', 'toucan'],
   },
 
-  // ESPALDA / CUERPO (Compatibilidad de arnés con caparazón y alas)
+  // ESPALDA / CUERPO (Universales: adaptadas al caparazón de tortuga y hombro alar de tucán)
   small_backpack: {
     compatiblePets: ['monkey', 'turtle', 'toucan'],
   },
   explorer_backpack: {
-    compatiblePets: ['monkey'],
-    reasons: {
-      turtle: 'No disponible: arnés rígido incompatible con el caparazón de Tortuguita',
-      toucan: 'No disponible: arnés pesado incompatible con las alas de Tucancito',
-    },
+    compatiblePets: ['monkey', 'turtle', 'toucan'],
   },
   short_cape: {
     compatiblePets: ['monkey', 'turtle', 'toucan'],

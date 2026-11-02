@@ -1,0 +1,11 @@
+ESTADO: COMPLETO
+PROYECTO: C:\Proyectos\Muyu — RAMA: claude/keen-pasteur-ctllxp
+COMBINACIONES OK ANTES: 124/144 en Fase 1 (20 bloqueadas sin variantes).
+COMBINACIONES OK DESPUÉS: 136/144 (94.4%) — Mono: 48/48 (100%), Tortuga: 44/48 (91.7%), Tucán: 44/48 (91.7%).
+RECUPERADOS (12): Tucán + lentes redondos (4, monóculo), Tortuga + mochila exp (4, caparazón), Tucán + mochila exp (4, ala).
+BLOQUEOS RESTANTES (8): Tortuga + gafas estrella (4, vista 3/4), Tucán + gafas estrella (4, colisión física pico).
+EVIDENCIAS: docs/evidencias_v4/antes/ (39 png), docs/evidencias_v4/despues/ (39 png), comparativa.md, matriz-accesorios.md.
+TEST: 2026-11-02 14:45:36 (75 pass, 0 fail).
+LINT: 2026-11-02 14:45:39 (0 errores).
+BUILD: 2026-11-02 14:45:41 (tsc -b && vite build exitoso en 426ms).
+COMMITS: 59f1230 (Fase 1) y d229581 / actual (Fase 1b).
